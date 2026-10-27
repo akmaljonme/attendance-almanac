@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  GraduationCap, Users, CalendarCheck, Wallet, UserSquare2, BarChart3, ArrowRight, Check,
+  Users, CalendarCheck, Wallet, UserSquare2, BarChart3, ArrowRight, Check,
   TrendingUp, AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { PLANS } from "@/lib/plans";
+import { Logo } from "@/components/app/logo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,17 +21,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Landing,
 });
-
-export function Logo({ light = false }: { light?: boolean }) {
-  return (
-    <span className={`flex items-center gap-2 font-display text-lg font-semibold ${light ? "text-navy-foreground" : "text-foreground"}`}>
-      <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-        <GraduationCap className="h-4.5 w-4.5" />
-      </span>
-      EduCRM
-    </span>
-  );
-}
 
 const benefits = [
   { icon: Users, title: "O'quvchilarni boshqarish", text: "Har bir o'quvchining guruhlari, to'lovlari va davomati bitta kartada." },
