@@ -18,8 +18,12 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppAttendanceRouteImport } from './routes/_authenticated/app.attendance'
 import { Route as AuthenticatedAppCoursesRouteImport } from './routes/_authenticated/app.courses'
 import { Route as AuthenticatedAppDashboardRouteImport } from './routes/_authenticated/app.dashboard'
+import { Route as AuthenticatedAppDebtsRouteImport } from './routes/_authenticated/app.debts'
+import { Route as AuthenticatedAppExpensesRouteImport } from './routes/_authenticated/app.expenses'
+import { Route as AuthenticatedAppPaymentsRouteImport } from './routes/_authenticated/app.payments'
 import { Route as AuthenticatedAppTeachersRouteImport } from './routes/_authenticated/app.teachers'
 import { Route as AuthenticatedAppGroupsIndexRouteImport } from './routes/_authenticated/app.groups.index'
 import { Route as AuthenticatedAppGroupsIdRouteImport } from './routes/_authenticated/app.groups.$id'
@@ -70,6 +74,12 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedAppAttendanceRoute =
+  AuthenticatedAppAttendanceRouteImport.update({
+    id: '/attendance',
+    path: '/attendance',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppCoursesRoute = AuthenticatedAppCoursesRouteImport.update({
   id: '/courses',
   path: '/courses',
@@ -79,6 +89,23 @@ const AuthenticatedAppDashboardRoute =
   AuthenticatedAppDashboardRouteImport.update({
     id: '/dashboard',
     path: '/dashboard',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppDebtsRoute = AuthenticatedAppDebtsRouteImport.update({
+  id: '/debts',
+  path: '/debts',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppExpensesRoute =
+  AuthenticatedAppExpensesRouteImport.update({
+    id: '/expenses',
+    path: '/expenses',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPaymentsRoute =
+  AuthenticatedAppPaymentsRouteImport.update({
+    id: '/payments',
+    path: '/payments',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppTeachersRoute =
@@ -120,8 +147,12 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/attendance': typeof AuthenticatedAppAttendanceRoute
   '/app/courses': typeof AuthenticatedAppCoursesRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/app/debts': typeof AuthenticatedAppDebtsRoute
+  '/app/expenses': typeof AuthenticatedAppExpensesRoute
+  '/app/payments': typeof AuthenticatedAppPaymentsRoute
   '/app/teachers': typeof AuthenticatedAppTeachersRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/groups/$id': typeof AuthenticatedAppGroupsIdRoute
@@ -136,8 +167,12 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/attendance': typeof AuthenticatedAppAttendanceRoute
   '/app/courses': typeof AuthenticatedAppCoursesRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/app/debts': typeof AuthenticatedAppDebtsRoute
+  '/app/expenses': typeof AuthenticatedAppExpensesRoute
+  '/app/payments': typeof AuthenticatedAppPaymentsRoute
   '/app/teachers': typeof AuthenticatedAppTeachersRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/groups/$id': typeof AuthenticatedAppGroupsIdRoute
@@ -155,8 +190,12 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/app/attendance': typeof AuthenticatedAppAttendanceRoute
   '/_authenticated/app/courses': typeof AuthenticatedAppCoursesRoute
   '/_authenticated/app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/_authenticated/app/debts': typeof AuthenticatedAppDebtsRoute
+  '/_authenticated/app/expenses': typeof AuthenticatedAppExpensesRoute
+  '/_authenticated/app/payments': typeof AuthenticatedAppPaymentsRoute
   '/_authenticated/app/teachers': typeof AuthenticatedAppTeachersRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/groups/$id': typeof AuthenticatedAppGroupsIdRoute
@@ -174,8 +213,12 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/app'
     | '/onboarding'
+    | '/app/attendance'
     | '/app/courses'
     | '/app/dashboard'
+    | '/app/debts'
+    | '/app/expenses'
+    | '/app/payments'
     | '/app/teachers'
     | '/app/'
     | '/app/groups/$id'
@@ -190,8 +233,12 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/onboarding'
+    | '/app/attendance'
     | '/app/courses'
     | '/app/dashboard'
+    | '/app/debts'
+    | '/app/expenses'
+    | '/app/payments'
     | '/app/teachers'
     | '/app'
     | '/app/groups/$id'
@@ -208,8 +255,12 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/_authenticated/app/attendance'
     | '/_authenticated/app/courses'
     | '/_authenticated/app/dashboard'
+    | '/_authenticated/app/debts'
+    | '/_authenticated/app/expenses'
+    | '/_authenticated/app/payments'
     | '/_authenticated/app/teachers'
     | '/_authenticated/app/'
     | '/_authenticated/app/groups/$id'
@@ -292,6 +343,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/attendance': {
+      id: '/_authenticated/app/attendance'
+      path: '/attendance'
+      fullPath: '/app/attendance'
+      preLoaderRoute: typeof AuthenticatedAppAttendanceRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/courses': {
       id: '/_authenticated/app/courses'
       path: '/courses'
@@ -304,6 +362,27 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/app/dashboard'
       preLoaderRoute: typeof AuthenticatedAppDashboardRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/debts': {
+      id: '/_authenticated/app/debts'
+      path: '/debts'
+      fullPath: '/app/debts'
+      preLoaderRoute: typeof AuthenticatedAppDebtsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/expenses': {
+      id: '/_authenticated/app/expenses'
+      path: '/expenses'
+      fullPath: '/app/expenses'
+      preLoaderRoute: typeof AuthenticatedAppExpensesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/payments': {
+      id: '/_authenticated/app/payments'
+      path: '/payments'
+      fullPath: '/app/payments'
+      preLoaderRoute: typeof AuthenticatedAppPaymentsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/teachers': {
@@ -345,8 +424,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppAttendanceRoute: typeof AuthenticatedAppAttendanceRoute
   AuthenticatedAppCoursesRoute: typeof AuthenticatedAppCoursesRoute
   AuthenticatedAppDashboardRoute: typeof AuthenticatedAppDashboardRoute
+  AuthenticatedAppDebtsRoute: typeof AuthenticatedAppDebtsRoute
+  AuthenticatedAppExpensesRoute: typeof AuthenticatedAppExpensesRoute
+  AuthenticatedAppPaymentsRoute: typeof AuthenticatedAppPaymentsRoute
   AuthenticatedAppTeachersRoute: typeof AuthenticatedAppTeachersRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppGroupsIdRoute: typeof AuthenticatedAppGroupsIdRoute
@@ -356,8 +439,12 @@ interface AuthenticatedAppRouteChildren {
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppAttendanceRoute: AuthenticatedAppAttendanceRoute,
   AuthenticatedAppCoursesRoute: AuthenticatedAppCoursesRoute,
   AuthenticatedAppDashboardRoute: AuthenticatedAppDashboardRoute,
+  AuthenticatedAppDebtsRoute: AuthenticatedAppDebtsRoute,
+  AuthenticatedAppExpensesRoute: AuthenticatedAppExpensesRoute,
+  AuthenticatedAppPaymentsRoute: AuthenticatedAppPaymentsRoute,
   AuthenticatedAppTeachersRoute: AuthenticatedAppTeachersRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
   AuthenticatedAppGroupsIdRoute: AuthenticatedAppGroupsIdRoute,
