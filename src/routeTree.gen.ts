@@ -18,7 +18,11 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppCoursesRouteImport } from './routes/_authenticated/app.courses'
 import { Route as AuthenticatedAppDashboardRouteImport } from './routes/_authenticated/app.dashboard'
+import { Route as AuthenticatedAppTeachersRouteImport } from './routes/_authenticated/app.teachers'
+import { Route as AuthenticatedAppGroupsIndexRouteImport } from './routes/_authenticated/app.groups.index'
+import { Route as AuthenticatedAppGroupsIdRouteImport } from './routes/_authenticated/app.groups.$id'
 import { Route as AuthenticatedAppStudentsIndexRouteImport } from './routes/_authenticated/app.students.index'
 import { Route as AuthenticatedAppStudentsIdRouteImport } from './routes/_authenticated/app.students.$id'
 
@@ -66,10 +70,33 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedAppCoursesRoute = AuthenticatedAppCoursesRouteImport.update({
+  id: '/courses',
+  path: '/courses',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
 const AuthenticatedAppDashboardRoute =
   AuthenticatedAppDashboardRouteImport.update({
     id: '/dashboard',
     path: '/dashboard',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppTeachersRoute =
+  AuthenticatedAppTeachersRouteImport.update({
+    id: '/teachers',
+    path: '/teachers',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppGroupsIndexRoute =
+  AuthenticatedAppGroupsIndexRouteImport.update({
+    id: '/groups/',
+    path: '/groups/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppGroupsIdRoute =
+  AuthenticatedAppGroupsIdRouteImport.update({
+    id: '/groups/$id',
+    path: '/groups/$id',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppStudentsIndexRoute =
@@ -93,9 +120,13 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/courses': typeof AuthenticatedAppCoursesRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/app/teachers': typeof AuthenticatedAppTeachersRoute
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/groups/$id': typeof AuthenticatedAppGroupsIdRoute
   '/app/students/$id': typeof AuthenticatedAppStudentsIdRoute
+  '/app/groups/': typeof AuthenticatedAppGroupsIndexRoute
   '/app/students/': typeof AuthenticatedAppStudentsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -105,9 +136,13 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/courses': typeof AuthenticatedAppCoursesRoute
   '/app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/app/teachers': typeof AuthenticatedAppTeachersRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/groups/$id': typeof AuthenticatedAppGroupsIdRoute
   '/app/students/$id': typeof AuthenticatedAppStudentsIdRoute
+  '/app/groups': typeof AuthenticatedAppGroupsIndexRoute
   '/app/students': typeof AuthenticatedAppStudentsIndexRoute
 }
 export interface FileRoutesById {
@@ -120,9 +155,13 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/app/courses': typeof AuthenticatedAppCoursesRoute
   '/_authenticated/app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/_authenticated/app/teachers': typeof AuthenticatedAppTeachersRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/groups/$id': typeof AuthenticatedAppGroupsIdRoute
   '/_authenticated/app/students/$id': typeof AuthenticatedAppStudentsIdRoute
+  '/_authenticated/app/groups/': typeof AuthenticatedAppGroupsIndexRoute
   '/_authenticated/app/students/': typeof AuthenticatedAppStudentsIndexRoute
 }
 export interface FileRouteTypes {
@@ -135,9 +174,13 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/app'
     | '/onboarding'
+    | '/app/courses'
     | '/app/dashboard'
+    | '/app/teachers'
     | '/app/'
+    | '/app/groups/$id'
     | '/app/students/$id'
+    | '/app/groups/'
     | '/app/students/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -147,9 +190,13 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/onboarding'
+    | '/app/courses'
     | '/app/dashboard'
+    | '/app/teachers'
     | '/app'
+    | '/app/groups/$id'
     | '/app/students/$id'
+    | '/app/groups'
     | '/app/students'
   id:
     | '__root__'
@@ -161,9 +208,13 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/_authenticated/app/courses'
     | '/_authenticated/app/dashboard'
+    | '/_authenticated/app/teachers'
     | '/_authenticated/app/'
+    | '/_authenticated/app/groups/$id'
     | '/_authenticated/app/students/$id'
+    | '/_authenticated/app/groups/'
     | '/_authenticated/app/students/'
   fileRoutesById: FileRoutesById
 }
@@ -241,11 +292,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/courses': {
+      id: '/_authenticated/app/courses'
+      path: '/courses'
+      fullPath: '/app/courses'
+      preLoaderRoute: typeof AuthenticatedAppCoursesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/dashboard': {
       id: '/_authenticated/app/dashboard'
       path: '/dashboard'
       fullPath: '/app/dashboard'
       preLoaderRoute: typeof AuthenticatedAppDashboardRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/teachers': {
+      id: '/_authenticated/app/teachers'
+      path: '/teachers'
+      fullPath: '/app/teachers'
+      preLoaderRoute: typeof AuthenticatedAppTeachersRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/groups/': {
+      id: '/_authenticated/app/groups/'
+      path: '/groups'
+      fullPath: '/app/groups/'
+      preLoaderRoute: typeof AuthenticatedAppGroupsIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/groups/$id': {
+      id: '/_authenticated/app/groups/$id'
+      path: '/groups/$id'
+      fullPath: '/app/groups/$id'
+      preLoaderRoute: typeof AuthenticatedAppGroupsIdRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/students/': {
@@ -266,16 +345,24 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppCoursesRoute: typeof AuthenticatedAppCoursesRoute
   AuthenticatedAppDashboardRoute: typeof AuthenticatedAppDashboardRoute
+  AuthenticatedAppTeachersRoute: typeof AuthenticatedAppTeachersRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppGroupsIdRoute: typeof AuthenticatedAppGroupsIdRoute
   AuthenticatedAppStudentsIdRoute: typeof AuthenticatedAppStudentsIdRoute
+  AuthenticatedAppGroupsIndexRoute: typeof AuthenticatedAppGroupsIndexRoute
   AuthenticatedAppStudentsIndexRoute: typeof AuthenticatedAppStudentsIndexRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppCoursesRoute: AuthenticatedAppCoursesRoute,
   AuthenticatedAppDashboardRoute: AuthenticatedAppDashboardRoute,
+  AuthenticatedAppTeachersRoute: AuthenticatedAppTeachersRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppGroupsIdRoute: AuthenticatedAppGroupsIdRoute,
   AuthenticatedAppStudentsIdRoute: AuthenticatedAppStudentsIdRoute,
+  AuthenticatedAppGroupsIndexRoute: AuthenticatedAppGroupsIndexRoute,
   AuthenticatedAppStudentsIndexRoute: AuthenticatedAppStudentsIndexRoute,
 }
 
