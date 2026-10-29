@@ -24,9 +24,14 @@ import { Route as AuthenticatedAppDashboardRouteImport } from './routes/_authent
 import { Route as AuthenticatedAppDebtsRouteImport } from './routes/_authenticated/app.debts'
 import { Route as AuthenticatedAppExpensesRouteImport } from './routes/_authenticated/app.expenses'
 import { Route as AuthenticatedAppPaymentsRouteImport } from './routes/_authenticated/app.payments'
+import { Route as AuthenticatedAppProfileRouteImport } from './routes/_authenticated/app.profile'
+import { Route as AuthenticatedAppReportsRouteImport } from './routes/_authenticated/app.reports'
+import { Route as AuthenticatedAppScheduleRouteImport } from './routes/_authenticated/app.schedule'
 import { Route as AuthenticatedAppTeachersRouteImport } from './routes/_authenticated/app.teachers'
 import { Route as AuthenticatedAppGroupsIndexRouteImport } from './routes/_authenticated/app.groups.index'
 import { Route as AuthenticatedAppGroupsIdRouteImport } from './routes/_authenticated/app.groups.$id'
+import { Route as AuthenticatedAppSettingsIndexRouteImport } from './routes/_authenticated/app.settings.index'
+import { Route as AuthenticatedAppSettingsUsersRouteImport } from './routes/_authenticated/app.settings.users'
 import { Route as AuthenticatedAppStudentsIndexRouteImport } from './routes/_authenticated/app.students.index'
 import { Route as AuthenticatedAppStudentsIdRouteImport } from './routes/_authenticated/app.students.$id'
 
@@ -108,6 +113,22 @@ const AuthenticatedAppPaymentsRoute =
     path: '/payments',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppProfileRoute = AuthenticatedAppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppReportsRoute = AuthenticatedAppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppScheduleRoute =
+  AuthenticatedAppScheduleRouteImport.update({
+    id: '/schedule',
+    path: '/schedule',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppTeachersRoute =
   AuthenticatedAppTeachersRouteImport.update({
     id: '/teachers',
@@ -124,6 +145,18 @@ const AuthenticatedAppGroupsIdRoute =
   AuthenticatedAppGroupsIdRouteImport.update({
     id: '/groups/$id',
     path: '/groups/$id',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSettingsIndexRoute =
+  AuthenticatedAppSettingsIndexRouteImport.update({
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSettingsUsersRoute =
+  AuthenticatedAppSettingsUsersRouteImport.update({
+    id: '/settings/users',
+    path: '/settings/users',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppStudentsIndexRoute =
@@ -153,11 +186,16 @@ export interface FileRoutesByFullPath {
   '/app/debts': typeof AuthenticatedAppDebtsRoute
   '/app/expenses': typeof AuthenticatedAppExpensesRoute
   '/app/payments': typeof AuthenticatedAppPaymentsRoute
+  '/app/profile': typeof AuthenticatedAppProfileRoute
+  '/app/reports': typeof AuthenticatedAppReportsRoute
+  '/app/schedule': typeof AuthenticatedAppScheduleRoute
   '/app/teachers': typeof AuthenticatedAppTeachersRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/groups/$id': typeof AuthenticatedAppGroupsIdRoute
+  '/app/settings/users': typeof AuthenticatedAppSettingsUsersRoute
   '/app/students/$id': typeof AuthenticatedAppStudentsIdRoute
   '/app/groups/': typeof AuthenticatedAppGroupsIndexRoute
+  '/app/settings/': typeof AuthenticatedAppSettingsIndexRoute
   '/app/students/': typeof AuthenticatedAppStudentsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -173,11 +211,16 @@ export interface FileRoutesByTo {
   '/app/debts': typeof AuthenticatedAppDebtsRoute
   '/app/expenses': typeof AuthenticatedAppExpensesRoute
   '/app/payments': typeof AuthenticatedAppPaymentsRoute
+  '/app/profile': typeof AuthenticatedAppProfileRoute
+  '/app/reports': typeof AuthenticatedAppReportsRoute
+  '/app/schedule': typeof AuthenticatedAppScheduleRoute
   '/app/teachers': typeof AuthenticatedAppTeachersRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/groups/$id': typeof AuthenticatedAppGroupsIdRoute
+  '/app/settings/users': typeof AuthenticatedAppSettingsUsersRoute
   '/app/students/$id': typeof AuthenticatedAppStudentsIdRoute
   '/app/groups': typeof AuthenticatedAppGroupsIndexRoute
+  '/app/settings': typeof AuthenticatedAppSettingsIndexRoute
   '/app/students': typeof AuthenticatedAppStudentsIndexRoute
 }
 export interface FileRoutesById {
@@ -196,11 +239,16 @@ export interface FileRoutesById {
   '/_authenticated/app/debts': typeof AuthenticatedAppDebtsRoute
   '/_authenticated/app/expenses': typeof AuthenticatedAppExpensesRoute
   '/_authenticated/app/payments': typeof AuthenticatedAppPaymentsRoute
+  '/_authenticated/app/profile': typeof AuthenticatedAppProfileRoute
+  '/_authenticated/app/reports': typeof AuthenticatedAppReportsRoute
+  '/_authenticated/app/schedule': typeof AuthenticatedAppScheduleRoute
   '/_authenticated/app/teachers': typeof AuthenticatedAppTeachersRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/groups/$id': typeof AuthenticatedAppGroupsIdRoute
+  '/_authenticated/app/settings/users': typeof AuthenticatedAppSettingsUsersRoute
   '/_authenticated/app/students/$id': typeof AuthenticatedAppStudentsIdRoute
   '/_authenticated/app/groups/': typeof AuthenticatedAppGroupsIndexRoute
+  '/_authenticated/app/settings/': typeof AuthenticatedAppSettingsIndexRoute
   '/_authenticated/app/students/': typeof AuthenticatedAppStudentsIndexRoute
 }
 export interface FileRouteTypes {
@@ -219,11 +267,16 @@ export interface FileRouteTypes {
     | '/app/debts'
     | '/app/expenses'
     | '/app/payments'
+    | '/app/profile'
+    | '/app/reports'
+    | '/app/schedule'
     | '/app/teachers'
     | '/app/'
     | '/app/groups/$id'
+    | '/app/settings/users'
     | '/app/students/$id'
     | '/app/groups/'
+    | '/app/settings/'
     | '/app/students/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -239,11 +292,16 @@ export interface FileRouteTypes {
     | '/app/debts'
     | '/app/expenses'
     | '/app/payments'
+    | '/app/profile'
+    | '/app/reports'
+    | '/app/schedule'
     | '/app/teachers'
     | '/app'
     | '/app/groups/$id'
+    | '/app/settings/users'
     | '/app/students/$id'
     | '/app/groups'
+    | '/app/settings'
     | '/app/students'
   id:
     | '__root__'
@@ -261,11 +319,16 @@ export interface FileRouteTypes {
     | '/_authenticated/app/debts'
     | '/_authenticated/app/expenses'
     | '/_authenticated/app/payments'
+    | '/_authenticated/app/profile'
+    | '/_authenticated/app/reports'
+    | '/_authenticated/app/schedule'
     | '/_authenticated/app/teachers'
     | '/_authenticated/app/'
     | '/_authenticated/app/groups/$id'
+    | '/_authenticated/app/settings/users'
     | '/_authenticated/app/students/$id'
     | '/_authenticated/app/groups/'
+    | '/_authenticated/app/settings/'
     | '/_authenticated/app/students/'
   fileRoutesById: FileRoutesById
 }
@@ -385,6 +448,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppPaymentsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/profile': {
+      id: '/_authenticated/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AuthenticatedAppProfileRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/reports': {
+      id: '/_authenticated/app/reports'
+      path: '/reports'
+      fullPath: '/app/reports'
+      preLoaderRoute: typeof AuthenticatedAppReportsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/schedule': {
+      id: '/_authenticated/app/schedule'
+      path: '/schedule'
+      fullPath: '/app/schedule'
+      preLoaderRoute: typeof AuthenticatedAppScheduleRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/teachers': {
       id: '/_authenticated/app/teachers'
       path: '/teachers'
@@ -404,6 +488,20 @@ declare module '@tanstack/react-router' {
       path: '/groups/$id'
       fullPath: '/app/groups/$id'
       preLoaderRoute: typeof AuthenticatedAppGroupsIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/settings/': {
+      id: '/_authenticated/app/settings/'
+      path: '/settings'
+      fullPath: '/app/settings/'
+      preLoaderRoute: typeof AuthenticatedAppSettingsIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/settings/users': {
+      id: '/_authenticated/app/settings/users'
+      path: '/settings/users'
+      fullPath: '/app/settings/users'
+      preLoaderRoute: typeof AuthenticatedAppSettingsUsersRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/students/': {
@@ -430,11 +528,16 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppDebtsRoute: typeof AuthenticatedAppDebtsRoute
   AuthenticatedAppExpensesRoute: typeof AuthenticatedAppExpensesRoute
   AuthenticatedAppPaymentsRoute: typeof AuthenticatedAppPaymentsRoute
+  AuthenticatedAppProfileRoute: typeof AuthenticatedAppProfileRoute
+  AuthenticatedAppReportsRoute: typeof AuthenticatedAppReportsRoute
+  AuthenticatedAppScheduleRoute: typeof AuthenticatedAppScheduleRoute
   AuthenticatedAppTeachersRoute: typeof AuthenticatedAppTeachersRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppGroupsIdRoute: typeof AuthenticatedAppGroupsIdRoute
+  AuthenticatedAppSettingsUsersRoute: typeof AuthenticatedAppSettingsUsersRoute
   AuthenticatedAppStudentsIdRoute: typeof AuthenticatedAppStudentsIdRoute
   AuthenticatedAppGroupsIndexRoute: typeof AuthenticatedAppGroupsIndexRoute
+  AuthenticatedAppSettingsIndexRoute: typeof AuthenticatedAppSettingsIndexRoute
   AuthenticatedAppStudentsIndexRoute: typeof AuthenticatedAppStudentsIndexRoute
 }
 
@@ -445,11 +548,16 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppDebtsRoute: AuthenticatedAppDebtsRoute,
   AuthenticatedAppExpensesRoute: AuthenticatedAppExpensesRoute,
   AuthenticatedAppPaymentsRoute: AuthenticatedAppPaymentsRoute,
+  AuthenticatedAppProfileRoute: AuthenticatedAppProfileRoute,
+  AuthenticatedAppReportsRoute: AuthenticatedAppReportsRoute,
+  AuthenticatedAppScheduleRoute: AuthenticatedAppScheduleRoute,
   AuthenticatedAppTeachersRoute: AuthenticatedAppTeachersRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
   AuthenticatedAppGroupsIdRoute: AuthenticatedAppGroupsIdRoute,
+  AuthenticatedAppSettingsUsersRoute: AuthenticatedAppSettingsUsersRoute,
   AuthenticatedAppStudentsIdRoute: AuthenticatedAppStudentsIdRoute,
   AuthenticatedAppGroupsIndexRoute: AuthenticatedAppGroupsIndexRoute,
+  AuthenticatedAppSettingsIndexRoute: AuthenticatedAppSettingsIndexRoute,
   AuthenticatedAppStudentsIndexRoute: AuthenticatedAppStudentsIndexRoute,
 }
 
