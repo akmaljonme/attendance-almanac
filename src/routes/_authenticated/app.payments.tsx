@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/app/payments")({
   component: PaymentsPage,
 });
 
-type P = NonNullable<ReturnType<typeof paymentsQ>["queryFn"]> extends (...a: never[]) => Promise<infer R> ? R extends (infer X)[] ? X : never : never;
+type P = Awaited<ReturnType<NonNullable<ReturnType<typeof paymentsQ>["queryFn"]>>>[number];
 
 function PaymentsPage() {
   const { centerId, centerName, role } = useCenter();
