@@ -1,17 +1,25 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-async function run<T>(p: PromiseLike<{ data: T | null; error: { message: string } | null }>): Promise<T> {
+async function run<T>(
+  p: PromiseLike<{ data: T | null; error: { message: string } | null }>,
+): Promise<T> {
   const { data, error } = await p;
   if (error) throw new Error(error.message);
   return (data ?? []) as T;
 }
 
 export const coursesQ = (c: string) =>
-  queryOptions({ queryKey: ["courses", c], queryFn: () => run(supabase.from("courses").select("*").eq("center_id", c).order("name")) });
+  queryOptions({
+    queryKey: ["courses", c],
+    queryFn: () => run(supabase.from("courses").select("*").eq("center_id", c).order("name")),
+  });
 
 export const teachersQ = (c: string) =>
-  queryOptions({ queryKey: ["teachers", c], queryFn: () => run(supabase.from("teachers").select("*").eq("center_id", c).order("full_name")) });
+  queryOptions({
+    queryKey: ["teachers", c],
+    queryFn: () => run(supabase.from("teachers").select("*").eq("center_id", c).order("full_name")),
+  });
 
 export const groupsQ = (c: string) =>
   queryOptions({
@@ -40,7 +48,10 @@ export const studentsQ = (c: string) =>
   });
 
 export const balancesQ = (c: string) =>
-  queryOptions({ queryKey: ["balances", c], queryFn: () => run(supabase.from("v_student_balances").select("*").eq("center_id", c)) });
+  queryOptions({
+    queryKey: ["balances", c],
+    queryFn: () => run(supabase.from("v_student_balances").select("*").eq("center_id", c)),
+  });
 
 export const paymentsQ = (c: string, from: string, to: string) =>
   queryOptions({
@@ -62,7 +73,15 @@ export const expensesQ = (c: string, from: string, to: string) =>
   queryOptions({
     queryKey: ["expenses", c, from, to],
     queryFn: () =>
-      run(supabase.from("expenses").select("*").eq("center_id", c).gte("spent_on", from).lte("spent_on", to).order("spent_on", { ascending: false })),
+      run(
+        supabase
+          .from("expenses")
+          .select("*")
+          .eq("center_id", c)
+          .gte("spent_on", from)
+          .lte("spent_on", to)
+          .order("spent_on", { ascending: false }),
+      ),
   });
 
 /** Every query key family touched by financial writes. */

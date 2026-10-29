@@ -40,10 +40,18 @@ function ResetPage() {
   return (
     <AuthShell title="Yangi parol o'rnatish">
       <form onSubmit={submit} className="space-y-4">
-        <Field label="Yangi parol"><Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} /></Field>
-        <Field label="Parolni takrorlang"><Input type="password" value={pw2} onChange={(e) => setPw2(e.target.value)} /></Field>
-        {err && <p className="rounded-md bg-destructive-soft px-3 py-2 text-sm text-destructive">{err}</p>}
-        <Button type="submit" className="w-full" disabled={busy}>{busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Saqlash</Button>
+        <Field label="Yangi parol">
+          <Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} />
+        </Field>
+        <Field label="Parolni takrorlang">
+          <Input type="password" value={pw2} onChange={(e) => setPw2(e.target.value)} />
+        </Field>
+        {err && (
+          <p className="rounded-md bg-destructive-soft px-3 py-2 text-sm text-destructive">{err}</p>
+        )}
+        <Button type="submit" className="w-full" disabled={busy}>
+          {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Saqlash
+        </Button>
       </form>
     </AuthShell>
   );

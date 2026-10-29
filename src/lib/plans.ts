@@ -14,7 +14,12 @@ export const PLANS = [
     price: "399 000",
     desc: "O'sayotgan markazlar uchun",
     featured: true,
-    features: ["500 tagacha o'quvchi", "10 ta xodim", "Hisobotlar va CSV eksport", "Xarajatlar hisobi"],
+    features: [
+      "500 tagacha o'quvchi",
+      "10 ta xodim",
+      "Hisobotlar va CSV eksport",
+      "Xarajatlar hisobi",
+    ],
   },
   {
     id: "business",

@@ -47,9 +47,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Sahifa yuklanmadi
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">Sahifa yuklanmadi</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Nimadir noto'g'ri ketdi. Qayta urinib ko'ring.
         </p>
@@ -81,9 +79,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Markazly — O'quv markazlari uchun boshqaruv tizimi" },
-      { name: "description", content: "O'quvchilar, davomat, to'lovlar va qarzdorlikni bitta tizimda boshqaring." },
+      {
+        name: "description",
+        content: "O'quvchilar, davomat, to'lovlar va qarzdorlikni bitta tizimda boshqaring.",
+      },
+      { name: "theme-color", content: "#2f55d4" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:site_name", content: "Markazly" },
+      { property: "og:locale", content: "uz_UZ" },
+      { property: "og:image", content: "/logo.png" },
+      { name: "twitter:card", content: "summary" },
     ],
     links: [
       {
@@ -91,9 +96,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/logo.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/logo.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -130,7 +139,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <Toaster richColors position="top-right" />
     </QueryClientProvider>

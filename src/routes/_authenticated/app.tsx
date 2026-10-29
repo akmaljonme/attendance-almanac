@@ -2,16 +2,45 @@ import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tan
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import {
-  LayoutDashboard, Users, BookOpen, UsersRound, UserSquare2, CalendarCheck, Wallet, AlertCircle,
-  Receipt, CalendarDays, BarChart3, Settings, LogOut, Loader2, UserCircle,
+  LayoutDashboard,
+  Users,
+  BookOpen,
+  UsersRound,
+  UserSquare2,
+  CalendarCheck,
+  Wallet,
+  AlertCircle,
+  Receipt,
+  CalendarDays,
+  BarChart3,
+  Settings,
+  LogOut,
+  Loader2,
+  UserCircle,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader,
-  SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, useSidebar,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Logo } from "@/components/app/logo";
 import { CenterProvider, can, type CenterCtx, type CenterRole } from "@/lib/center";
@@ -35,8 +64,15 @@ function AppLayout() {
         .limit(1)
         .maybeSingle();
       if (error) throw error;
-      const { data: p } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle();
-      return { m, name: p?.full_name || (user.user_metadata?.full_name as string) || user.email || "" };
+      const { data: p } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", user.id)
+        .maybeSingle();
+      return {
+        m,
+        name: p?.full_name || (user.user_metadata?.full_name as string) || user.email || "",
+      };
     },
   });
 
@@ -45,7 +81,11 @@ function AppLayout() {
   }, [q.data, navigate]);
 
   if (q.isLoading || !q.data?.m) {
-    return <div className="grid min-h-screen place-items-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+    return (
+      <div className="grid min-h-screen place-items-center">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
   }
 
   const ctx: CenterCtx = {
@@ -74,7 +114,12 @@ function AppLayout() {
   );
 }
 
-type NavItem = { title: string; url: string; icon: typeof Users; show?: (r: CenterRole) => boolean };
+type NavItem = {
+  title: string;
+  url: string;
+  icon: typeof Users;
+  show?: (r: CenterRole) => boolean;
+};
 const groups: { label: string; items: NavItem[] }[] = [
   {
     label: "Asosiy",
@@ -89,7 +134,12 @@ const groups: { label: string; items: NavItem[] }[] = [
   {
     label: "Darslar",
     items: [
-      { title: "Davomat", url: "/app/attendance", icon: CalendarCheck, show: (r) => can(r).attendance },
+      {
+        title: "Davomat",
+        url: "/app/attendance",
+        icon: CalendarCheck,
+        show: (r) => can(r).attendance,
+      },
       { title: "Dars jadvali", url: "/app/schedule", icon: CalendarDays },
     ],
   },
@@ -97,14 +147,21 @@ const groups: { label: string; items: NavItem[] }[] = [
     label: "Moliya",
     items: [
       { title: "To'lovlar", url: "/app/payments", icon: Wallet, show: (r) => can(r).recordPayment },
-      { title: "Qarzdorlik", url: "/app/debts", icon: AlertCircle, show: (r) => can(r).recordPayment },
+      {
+        title: "Qarzdorlik",
+        url: "/app/debts",
+        icon: AlertCircle,
+        show: (r) => can(r).recordPayment,
+      },
       { title: "Xarajatlar", url: "/app/expenses", icon: Receipt, show: (r) => can(r).expenses },
       { title: "Hisobotlar", url: "/app/reports", icon: BarChart3, show: (r) => can(r).finance },
     ],
   },
   {
     label: "Boshqaruv",
-    items: [{ title: "Sozlamalar", url: "/app/settings", icon: Settings, show: (r) => can(r).settings }],
+    items: [
+      { title: "Sozlamalar", url: "/app/settings", icon: Settings, show: (r) => can(r).settings },
+    ],
   },
 ];
 
@@ -115,7 +172,13 @@ function AppSidebar({ role }: { role: CenterRole }) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="px-3 py-4">
-        {collapsed ? <span className="mx-auto"><Logo light /></span> : <Logo light />}
+        {collapsed ? (
+          <span className="mx-auto">
+            <Logo light />
+          </span>
+        ) : (
+          <Logo light />
+        )}
       </SidebarHeader>
       <SidebarContent>
         {groups.map((g) => {
@@ -128,8 +191,15 @@ function AppSidebar({ role }: { role: CenterRole }) {
                 <SidebarMenu>
                   {items.map((i) => (
                     <SidebarMenuItem key={i.url}>
-                      <SidebarMenuButton asChild isActive={path === i.url || path.startsWith(i.url + "/")} tooltip={i.title}>
-                        <Link to={i.url}><i.icon className="h-4 w-4" /><span>{i.title}</span></Link>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={path === i.url || path.startsWith(i.url + "/")}
+                        tooltip={i.title}
+                      >
+                        <Link to={i.url}>
+                          <i.icon className="h-4 w-4" />
+                          <span>{i.title}</span>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
@@ -153,7 +223,13 @@ function TopBar({ ctx }: { ctx: CenterCtx }) {
     await supabase.auth.signOut();
     navigate({ to: "/login", replace: true });
   }
-  const initials = ctx.userName.split(" ").map((x) => x[0]).slice(0, 2).join("").toUpperCase() || "U";
+  const initials =
+    ctx.userName
+      .split(" ")
+      .map((x) => x[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "U";
   return (
     <header className="no-print sticky top-0 z-20 flex h-14 items-center gap-3 border-b bg-card/90 px-4 backdrop-blur">
       <SidebarTrigger />
@@ -163,16 +239,28 @@ function TopBar({ ctx }: { ctx: CenterCtx }) {
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger className="flex items-center gap-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary-soft text-xs font-semibold text-primary">{initials}</span>
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary-soft text-xs font-semibold text-primary">
+            {initials}
+          </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel>
             <p className="truncate">{ctx.userName}</p>
-            <p className="truncate text-xs font-normal text-muted-foreground">{ROLE_LABELS[ctx.role]}</p>
+            <p className="truncate text-xs font-normal text-muted-foreground">
+              {ROLE_LABELS[ctx.role]}
+            </p>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild><Link to="/app/profile"><UserCircle className="mr-2 h-4 w-4" />Profil</Link></DropdownMenuItem>
-          <DropdownMenuItem onClick={signOut}><LogOut className="mr-2 h-4 w-4" />Chiqish</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/app/profile">
+              <UserCircle className="mr-2 h-4 w-4" />
+              Profil
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={signOut}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Chiqish
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

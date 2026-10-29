@@ -28,17 +28,41 @@ function ForgotPage() {
     e.preventDefault();
     if (!/^\S+@\S+\.\S+$/.test(email)) return setMsg({ ok: false, text: "To'g'ri email kiriting" });
     setBusy(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${window.location.origin}/reset-password` });
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
     setBusy(false);
-    setMsg(error ? { ok: false, text: authErrorUz(error.message) } : { ok: true, text: "Agar bu email ro'yxatdan o'tgan bo'lsa, tiklash havolasi yuborildi." });
+    setMsg(
+      error
+        ? { ok: false, text: authErrorUz(error.message) }
+        : { ok: true, text: "Agar bu email ro'yxatdan o'tgan bo'lsa, tiklash havolasi yuborildi." },
+    );
   }
 
   return (
-    <AuthShell title="Parolni tiklash" subtitle="Emailingizni kiriting — tiklash havolasini yuboramiz." footer={<Link to="/login" className="text-primary">Kirish sahifasiga qaytish</Link>}>
+    <AuthShell
+      title="Parolni tiklash"
+      subtitle="Emailingizni kiriting — tiklash havolasini yuboramiz."
+      footer={
+        <Link to="/login" className="text-primary">
+          Kirish sahifasiga qaytish
+        </Link>
+      }
+    >
       <form onSubmit={submit} className="space-y-4" noValidate>
-        <Field label="Email"><Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /></Field>
-        {msg && <p className={`rounded-md px-3 py-2 text-sm ${msg.ok ? "bg-success-soft text-success" : "bg-destructive-soft text-destructive"}`}>{msg.text}</p>}
-        <Button type="submit" className="w-full" disabled={busy}>{busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Havola yuborish</Button>
+        <Field label="Email">
+          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </Field>
+        {msg && (
+          <p
+            className={`rounded-md px-3 py-2 text-sm ${msg.ok ? "bg-success-soft text-success" : "bg-destructive-soft text-destructive"}`}
+          >
+            {msg.text}
+          </p>
+        )}
+        <Button type="submit" className="w-full" disabled={busy}>
+          {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Havola yuborish
+        </Button>
       </form>
     </AuthShell>
   );

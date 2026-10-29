@@ -1,5 +1,7 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "markazly",
+  "version": "1.0.0",
+  "description": "O'quv markazlari uchun davomat, to'lov va qarzdorlik boshqaruv tizimi",
   "private": true,
   "sideEffects": false,
   "type": "module",

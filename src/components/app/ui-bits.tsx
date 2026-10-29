@@ -3,7 +3,15 @@ import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function PageHeader({ title, description, actions }: { title: string; description?: string; actions?: ReactNode }) {
+export function PageHeader({
+  title,
+  description,
+  actions,
+}: {
+  title: string;
+  description?: string;
+  actions?: ReactNode;
+}) {
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
@@ -15,7 +23,17 @@ export function PageHeader({ title, description, actions }: { title: string; des
   );
 }
 
-export function Panel({ title, action, children, className }: { title?: string; action?: ReactNode; children: ReactNode; className?: string }) {
+export function Panel({
+  title,
+  action,
+  children,
+  className,
+}: {
+  title?: string;
+  action?: ReactNode;
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <section className={cn("rounded-xl border bg-card shadow-card", className)}>
       {title && (
@@ -29,7 +47,19 @@ export function Panel({ title, action, children, className }: { title?: string; 
   );
 }
 
-export function StatCard({ label, value, icon: Icon, tone = "default", hint }: { label: string; value: ReactNode; icon: LucideIcon; tone?: "default" | "success" | "danger" | "primary"; hint?: string }) {
+export function StatCard({
+  label,
+  value,
+  icon: Icon,
+  tone = "default",
+  hint,
+}: {
+  label: string;
+  value: ReactNode;
+  icon: LucideIcon;
+  tone?: "default" | "success" | "danger" | "primary";
+  hint?: string;
+}) {
   const tones = {
     default: "bg-muted text-muted-foreground",
     primary: "bg-primary-soft text-primary",
@@ -50,7 +80,17 @@ export function StatCard({ label, value, icon: Icon, tone = "default", hint }: {
   );
 }
 
-export function EmptyState({ icon: Icon, title, text, action }: { icon: LucideIcon; title: string; text?: string; action?: ReactNode }) {
+export function EmptyState({
+  icon: Icon,
+  title,
+  text,
+  action,
+}: {
+  icon: LucideIcon;
+  title: string;
+  text?: string;
+  action?: ReactNode;
+}) {
   return (
     <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
       <span className="grid h-12 w-12 place-items-center rounded-full bg-primary-soft text-primary">
@@ -81,7 +121,13 @@ export function ErrorBox({ error }: { error: unknown }) {
   );
 }
 
-export function StatusBadge({ tone, children }: { tone: "success" | "danger" | "muted" | "primary" | "warning"; children: ReactNode }) {
+export function StatusBadge({
+  tone,
+  children,
+}: {
+  tone: "success" | "danger" | "muted" | "primary" | "warning";
+  children: ReactNode;
+}) {
   const tones = {
     success: "bg-success-soft text-success",
     danger: "bg-destructive-soft text-destructive",
@@ -89,10 +135,29 @@ export function StatusBadge({ tone, children }: { tone: "success" | "danger" | "
     primary: "bg-primary-soft text-primary",
     warning: "bg-warning-soft text-warning",
   };
-  return <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", tones[tone])}>{children}</span>;
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
+        tones[tone],
+      )}
+    >
+      {children}
+    </span>
+  );
 }
 
-export function Field({ label, error, children, hint }: { label: string; error?: string; children: ReactNode; hint?: string }) {
+export function Field({
+  label,
+  error,
+  children,
+  hint,
+}: {
+  label: string;
+  error?: string;
+  children: ReactNode;
+  hint?: string;
+}) {
   return (
     <label className="block space-y-1.5">
       <span className="text-sm font-medium text-foreground">{label}</span>

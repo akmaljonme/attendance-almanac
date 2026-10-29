@@ -30,7 +30,9 @@ const schema = z.object({
 function LoginPage() {
   const navigate = useNavigate();
   const [err, setErr] = useState<string | null>(null);
-  const { register, handleSubmit, formState } = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
+  const { register, handleSubmit, formState } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = handleSubmit(async (v) => {
     setErr(null);
@@ -43,19 +45,35 @@ function LoginPage() {
     <AuthShell
       title="Hisobga kirish"
       subtitle="Markazingiz boshqaruv paneliga kiring"
-      footer={<>Hisobingiz yo'qmi? <Link to="/register" className="font-medium text-primary">Ro'yxatdan o'ting</Link></>}
+      footer={
+        <>
+          Hisobingiz yo'qmi?{" "}
+          <Link to="/register" className="font-medium text-primary">
+            Ro'yxatdan o'ting
+          </Link>
+        </>
+      }
     >
       <form onSubmit={onSubmit} className="space-y-4" noValidate>
         <Field label="Email" error={formState.errors.email?.message}>
-          <Input type="email" autoComplete="email" placeholder="siz@markaz.uz" {...register("email")} />
+          <Input
+            type="email"
+            autoComplete="email"
+            placeholder="siz@markaz.uz"
+            {...register("email")}
+          />
         </Field>
         <Field label="Parol" error={formState.errors.password?.message}>
           <Input type="password" autoComplete="current-password" {...register("password")} />
         </Field>
         <div className="text-right text-sm">
-          <Link to="/forgot-password" className="text-primary">Parolni unutdingizmi?</Link>
+          <Link to="/forgot-password" className="text-primary">
+            Parolni unutdingizmi?
+          </Link>
         </div>
-        {err && <p className="rounded-md bg-destructive-soft px-3 py-2 text-sm text-destructive">{err}</p>}
+        {err && (
+          <p className="rounded-md bg-destructive-soft px-3 py-2 text-sm text-destructive">{err}</p>
+        )}
         <Button type="submit" className="w-full" disabled={formState.isSubmitting}>
           {formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Kirish
         </Button>
