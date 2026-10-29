@@ -12,7 +12,7 @@ import { EnrollDialog, GroupDialog, type GroupRow } from "@/components/app/dialo
 import { WEEKDAYS_UZ, formatDate, formatPhone, formatUZS, time5, todayISO } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/groups/$id")({
-  head: () => ({ meta: [{ title: "Guruh — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Guruh — Markazly" }] }),
   component: GroupPage,
 });
 

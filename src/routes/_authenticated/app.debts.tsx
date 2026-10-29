@@ -13,7 +13,7 @@ import { formatDate, formatMonth, formatPhone, formatUZS, parseUZS } from "@/lib
 import { downloadCSV } from "@/lib/csv";
 
 export const Route = createFileRoute("/_authenticated/app/debts")({
-  head: () => ({ meta: [{ title: "Qarzdorlik — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Qarzdorlik — Markazly" }] }),
   component: DebtsPage,
 });
 

@@ -13,7 +13,7 @@ import { STUDENT_STATUS, formatDate, formatPhone, formatUZS } from "@/lib/format
 import { downloadCSV } from "@/lib/csv";
 
 export const Route = createFileRoute("/_authenticated/app/students/")({
-  head: () => ({ meta: [{ title: "O'quvchilar — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "O'quvchilar — Markazly" }] }),
   component: StudentsPage,
 });
 

@@ -11,9 +11,9 @@ import { Logo } from "@/components/app/logo";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "EduCRM — O'quv markazingizni bitta tizimda boshqaring" },
+      { title: "Markazly — O'quv markazingizni bitta tizimda boshqaring" },
       { name: "description", content: "O'quvchilar, davomat, to'lovlar va qarzdorlikni bir joyda nazorat qiling. O'zbekistondagi o'quv markazlari uchun." },
-      { property: "og:title", content: "EduCRM — O'quv markazlari uchun boshqaruv tizimi" },
+      { property: "og:title", content: "Markazly — O'quv markazlari uchun boshqaruv tizimi" },
       { property: "og:description", content: "O'quvchilar, davomat, to'lovlar va qarzdorlikni bir joyda nazorat qiling." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -152,7 +152,7 @@ function Landing() {
       <footer className="bg-navy">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-10 sm:flex-row">
           <Logo light />
-          <p className="text-sm text-navy-foreground/70">© {new Date().getFullYear()} EduCRM</p>
+          <p className="text-sm text-navy-foreground/70">© {new Date().getFullYear()} Markazly</p>
         </div>
       </footer>
     </div>

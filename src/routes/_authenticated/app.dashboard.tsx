@@ -12,7 +12,7 @@ import { PaymentDialog, StudentDialog, GroupDialog } from "@/components/app/dial
 import { MONTHS_SHORT, addMonths, formatDate, formatUZS, isoWeekday, monthStartISO, time5, todayISO, PAYMENT_METHODS } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/dashboard")({
-  head: () => ({ meta: [{ title: "Bosh sahifa — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Bosh sahifa — Markazly" }] }),
   component: Dashboard,
 });
 

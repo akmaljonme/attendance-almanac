@@ -17,7 +17,7 @@ import { ExpenseDialog, type ExpenseRow } from "@/components/app/dialogs";
 import { EXPENSE_CATEGORIES, formatDate, formatUZS, monthStartISO, todayISO } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/expenses")({
-  head: () => ({ meta: [{ title: "Xarajatlar — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Xarajatlar — Markazly" }] }),
   component: ExpensesPage,
 });
 

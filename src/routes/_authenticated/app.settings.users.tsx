@@ -8,7 +8,7 @@ import { ErrorBox, LoadingRows, PageHeader, Panel, StatusBadge } from "@/compone
 import { ROLE_LABELS, formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/settings/users")({
-  head: () => ({ meta: [{ title: "Xodimlar — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Xodimlar — Markazly" }] }),
   component: UsersPage,
 });
 

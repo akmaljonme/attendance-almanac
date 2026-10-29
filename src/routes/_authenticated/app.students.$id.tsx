@@ -18,7 +18,7 @@ import { EnrollDialog, PaymentDialog, StudentDialog } from "@/components/app/dia
 import { ATTENDANCE_LABELS, PAYMENT_METHODS, STUDENT_STATUS, formatDate, formatMonth, formatPhone, formatUZS, parseUZS } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/students/$id")({
-  head: () => ({ meta: [{ title: "O'quvchi — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "O'quvchi — Markazly" }] }),
   component: StudentPage,
 });
 

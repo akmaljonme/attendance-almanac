@@ -14,7 +14,7 @@ import { ATTENDANCE_LABELS, formatDate, isoWeekday, todayISO } from "@/lib/forma
 
 export const Route = createFileRoute("/_authenticated/app/attendance")({
   validateSearch: z.object({ group: z.string().optional(), date: z.string().optional() }),
-  head: () => ({ meta: [{ title: "Davomat — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Davomat — Markazly" }] }),
   component: AttendancePage,
 });
 

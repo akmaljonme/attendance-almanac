@@ -12,7 +12,7 @@ import { ErrorBox, Field, LoadingRows, PageHeader, Panel } from "@/components/ap
 import { formatDate, normalizePhone } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/settings/")({
-  head: () => ({ meta: [{ title: "Sozlamalar — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Sozlamalar — Markazly" }] }),
   component: SettingsPage,
 });
 

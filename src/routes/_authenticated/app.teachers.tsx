@@ -10,7 +10,7 @@ import { TeacherDialog, type TeacherRow } from "@/components/app/dialogs";
 import { WEEKDAYS_SHORT, formatPhone, time5 } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/teachers")({
-  head: () => ({ meta: [{ title: "O'qituvchilar — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "O'qituvchilar — Markazly" }] }),
   component: TeachersPage,
 });
 

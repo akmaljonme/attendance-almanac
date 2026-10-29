@@ -13,10 +13,10 @@ import { AuthShell, authErrorUz } from "@/components/app/auth-shell";
 export const Route = createFileRoute("/register")({
   head: () => ({
     meta: [
-      { title: "Ro'yxatdan o'tish — EduCRM" },
-      { name: "description", content: "EduCRM'da markazingiz uchun bepul hisob yarating." },
-      { property: "og:title", content: "Ro'yxatdan o'tish — EduCRM" },
-      { property: "og:description", content: "EduCRM'da markazingiz uchun bepul hisob yarating." },
+      { title: "Ro'yxatdan o'tish — Markazly" },
+      { name: "description", content: "Markazly'da markazingiz uchun bepul hisob yarating." },
+      { property: "og:title", content: "Ro'yxatdan o'tish — Markazly" },
+      { property: "og:description", content: "Markazly'da markazingiz uchun bepul hisob yarating." },
     ],
   }),
   component: RegisterPage,

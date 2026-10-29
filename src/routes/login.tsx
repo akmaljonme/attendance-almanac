@@ -13,10 +13,10 @@ import { AuthShell, authErrorUz } from "@/components/app/auth-shell";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Kirish — EduCRM" },
-      { name: "description", content: "EduCRM hisobingizga kiring." },
-      { property: "og:title", content: "Kirish — EduCRM" },
-      { property: "og:description", content: "EduCRM hisobingizga kiring." },
+      { title: "Kirish — Markazly" },
+      { name: "description", content: "Markazly hisobingizga kiring." },
+      { property: "og:title", content: "Kirish — Markazly" },
+      { property: "og:description", content: "Markazly hisobingizga kiring." },
     ],
   }),
   component: LoginPage,

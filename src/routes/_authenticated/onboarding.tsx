@@ -13,7 +13,7 @@ import { normalizePhone } from "@/lib/format";
 import { PLANS } from "@/lib/plans";
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
-  head: () => ({ meta: [{ title: "Markazni sozlash — EduCRM" }, { name: "description", content: "O'quv markazingizni sozlang." }] }),
+  head: () => ({ meta: [{ title: "Markazni sozlash — Markazly" }, { name: "description", content: "O'quv markazingizni sozlang." }] }),
   component: Onboarding,
 });
 

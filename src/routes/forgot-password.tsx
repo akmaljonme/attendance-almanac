@@ -10,10 +10,10 @@ import { AuthShell, authErrorUz } from "@/components/app/auth-shell";
 export const Route = createFileRoute("/forgot-password")({
   head: () => ({
     meta: [
-      { title: "Parolni tiklash — EduCRM" },
-      { name: "description", content: "EduCRM parolingizni tiklash." },
-      { property: "og:title", content: "Parolni tiklash — EduCRM" },
-      { property: "og:description", content: "EduCRM parolingizni tiklash." },
+      { title: "Parolni tiklash — Markazly" },
+      { name: "description", content: "Markazly parolingizni tiklash." },
+      { property: "og:title", content: "Parolni tiklash — Markazly" },
+      { property: "og:description", content: "Markazly parolingizni tiklash." },
     ],
   }),
   component: ForgotPage,

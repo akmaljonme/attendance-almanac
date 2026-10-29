@@ -9,7 +9,7 @@ import { EmptyState, ErrorBox, LoadingRows, PageHeader, Panel } from "@/componen
 import { WEEKDAYS_UZ, addDays, formatDate, isoWeekday, time5, todayISO } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/schedule")({
-  head: () => ({ meta: [{ title: "Dars jadvali — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Dars jadvali — Markazly" }] }),
   component: SchedulePage,
 });
 

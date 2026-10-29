@@ -13,7 +13,7 @@ import { downloadCSV } from "@/lib/csv";
 import { TrendingUp, TrendingDown, AlertCircle, Users } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/app/reports")({
-  head: () => ({ meta: [{ title: "Hisobotlar — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Hisobotlar — Markazly" }] }),
   component: ReportsPage,
 });
 

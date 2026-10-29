@@ -13,7 +13,7 @@ export function AuthShell({ title, subtitle, children, footer }: { title: string
           </p>
           <p className="mt-3 max-w-md text-navy-foreground/70">Kundalik boshqaruvni soddalashtiring va markazingiz moliyasini aniq kuzating.</p>
         </div>
-        <p className="text-xs text-navy-foreground/50">© {new Date().getFullYear()} EduCRM</p>
+        <p className="text-xs text-navy-foreground/50">© {new Date().getFullYear()} Markazly</p>
       </div>
       <div className="flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-sm">

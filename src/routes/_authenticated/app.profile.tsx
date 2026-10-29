@@ -10,7 +10,7 @@ import { Field, PageHeader, Panel } from "@/components/app/ui-bits";
 import { ROLE_LABELS } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/profile")({
-  head: () => ({ meta: [{ title: "Profil — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Profil — Markazly" }] }),
   component: ProfilePage,
 });
 

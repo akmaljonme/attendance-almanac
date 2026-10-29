@@ -16,7 +16,7 @@ import { PAYMENT_METHODS, formatDate, formatMonth, formatPhone, formatUZS, month
 import { downloadCSV } from "@/lib/csv";
 
 export const Route = createFileRoute("/_authenticated/app/payments")({
-  head: () => ({ meta: [{ title: "To'lovlar — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "To'lovlar — Markazly" }] }),
   component: PaymentsPage,
 });
 

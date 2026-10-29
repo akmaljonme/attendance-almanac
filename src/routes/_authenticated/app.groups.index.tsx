@@ -10,7 +10,7 @@ import { GroupDialog } from "@/components/app/dialogs";
 import { WEEKDAYS_SHORT, formatUZS, time5 } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/groups/")({
-  head: () => ({ meta: [{ title: "Guruhlar — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Guruhlar — Markazly" }] }),
   component: GroupsPage,
 });
 

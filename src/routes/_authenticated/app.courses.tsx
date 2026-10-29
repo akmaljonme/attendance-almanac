@@ -11,7 +11,7 @@ import { CourseDialog, type CourseRow } from "@/components/app/dialogs";
 import { formatUZS } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/courses")({
-  head: () => ({ meta: [{ title: "Kurslar — EduCRM" }] }),
+  head: () => ({ meta: [{ title: "Kurslar — Markazly" }] }),
   component: CoursesPage,
 });
 
