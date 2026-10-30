@@ -14,6 +14,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_access: {
+        Row: {
+          blocked: boolean
+          created_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          blocked?: boolean
+          created_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          blocked?: boolean
+          created_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "account_access_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       attendance_records: {
         Row: {
           center_id: string
@@ -294,6 +323,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      creator_audit: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string
+          details: Json
+          id: string
+          target_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          created_at?: string
+          details?: Json
+          id?: string
+          target_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string
+          details?: Json
+          id?: string
+          target_id?: string | null
+        }
+        Relationships: []
       }
       enrollments: {
         Row: {
@@ -824,6 +880,24 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       v_student_balances: {
@@ -892,6 +966,7 @@ export type Database = {
       }
     }
     Functions: {
+      account_active: { Args: never; Returns: boolean }
       create_center: {
         Args: {
           _city: string
@@ -903,6 +978,10 @@ export type Database = {
         }
         Returns: string
       }
+      creator_create_center: {
+        Args: { _city: string; _name: string; _owner: string; _phone: string }
+        Returns: string
+      }
       has_center_role: {
         Args: {
           _center: string
@@ -910,9 +989,17 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       is_member: { Args: { _center: string }; Returns: boolean }
     }
     Enums: {
+      app_role: "creator"
       center_role: "owner" | "admin" | "teacher" | "receptionist"
     }
     CompositeTypes: {
@@ -1041,6 +1128,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["creator"],
       center_role: ["owner", "admin", "teacher", "receptionist"],
     },
   },
