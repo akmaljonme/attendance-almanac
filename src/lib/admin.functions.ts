@@ -43,6 +43,7 @@ export const adminCommand = createServerFn({ method: "POST" }).middleware([requi
   let target: string | undefined;
   if (data.action === "create_account") {
     const a = data.account;
+    if (a.center_id && a.role === "owner") throw new Error("Markaz egasi markaz yaratilganda biriktiriladi");
     const result = await admin.auth.admin.createUser({ email: usernameEmail(a.username), password: a.password, email_confirm: true, app_metadata: { admin_provisioned: true }, user_metadata: { full_name: a.full_name, phone: a.phone } });
     check(result);
     const user = result.data.user;
@@ -56,6 +57,8 @@ export const adminCommand = createServerFn({ method: "POST" }).middleware([requi
       throw error;
     }
   } else if (data.action === "create_center") {
+    const owner = await admin.from("profiles").select("id").eq("id", data.owner_id).single();
+    check(owner);
     const r = await admin.rpc("creator_create_center", { _name: data.name, _phone: data.phone, _city: data.city, _owner: data.owner_id });
     check(r); target = r.data ?? undefined;
   } else if (data.action === "edit_center") {
