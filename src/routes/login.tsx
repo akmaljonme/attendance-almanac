@@ -1,5 +1,7 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useCallback, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -8,73 +10,72 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/app/ui-bits";
-import { AuthShell, authErrorUz } from "@/components/app/auth-shell";
+import { AuthShell } from "@/components/app/auth-shell";
+import { RobotCheck } from "@/components/app/robot-check";
+import { captchaConfig, usernameLogin } from "@/lib/login.functions";
+import { creatorStatus } from "@/lib/admin.functions";
+import { usernameSchema } from "@/lib/access";
+import { pageHead } from "@/lib/page-head";
 
 export const Route = createFileRoute("/login")({
-  head: () => ({
-    meta: [
-      { title: "Kirish — Markazly" },
-      { name: "description", content: "Markazly hisobingizga kiring." },
-      { property: "og:title", content: "Kirish — Markazly" },
-      { property: "og:description", content: "Markazly hisobingizga kiring." },
-    ],
-  }),
+  head: () => pageHead("Kirish", "Markazly hisobingizga administrator bergan login bilan kiring."),
   component: LoginPage,
 });
 
 const schema = z.object({
-  email: z.string().trim().email("To'g'ri email kiriting"),
+  username: usernameSchema,
   password: z.string().min(1, "Parolni kiriting"),
 });
 
 function LoginPage() {
   const navigate = useNavigate();
   const [err, setErr] = useState<string | null>(null);
+  const [captcha, setCaptcha] = useState("");
+  const [attempt, setAttempt] = useState(0);
+  const verify = useCallback((token: string) => setCaptcha(token), []);
+  const login = useServerFn(usernameLogin);
+  const status = useServerFn(creatorStatus);
+  const configFn = useServerFn(captchaConfig);
+  const config = useQuery({ queryKey: ["captcha-config"], queryFn: () => configFn() });
   const { register, handleSubmit, formState } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
 
   const onSubmit = handleSubmit(async (v) => {
     setErr(null);
-    const { error } = await supabase.auth.signInWithPassword(v);
-    if (error) return setErr(authErrorUz(error.message));
-    navigate({ to: "/app/dashboard" });
+    try {
+      const tokens = await login({ data: { ...v, captcha } });
+      const { error } = await supabase.auth.setSession(tokens);
+      if (error) throw error;
+      const creator = await status();
+      navigate({ to: creator ? "/admin" : "/app/dashboard" });
+    } catch (error) { setErr(error instanceof Error ? error.message : "Kirish amalga oshmadi"); }
+    finally { setCaptcha(""); setAttempt((n) => n + 1); }
   });
 
   return (
     <AuthShell
       title="Hisobga kirish"
-      subtitle="Markazingiz boshqaruv paneliga kiring"
-      footer={
-        <>
-          Hisobingiz yo'qmi?{" "}
-          <Link to="/register" className="font-medium text-primary">
-            Ro'yxatdan o'ting
-          </Link>
-        </>
-      }
+      subtitle="Administrator bergan login va parol"
+      footer="Parolni unutdingizmi? Administratorga murojaat qiling."
     >
       <form onSubmit={onSubmit} className="space-y-4" noValidate>
-        <Field label="Email" error={formState.errors.email?.message}>
+        <Field label="Login" error={formState.errors.username?.message}>
           <Input
-            type="email"
-            autoComplete="email"
-            placeholder="siz@markaz.uz"
-            {...register("email")}
+            aria-label="Login"
+            autoComplete="username"
+            placeholder="Login"
+            {...register("username")}
           />
         </Field>
         <Field label="Parol" error={formState.errors.password?.message}>
-          <Input type="password" autoComplete="current-password" {...register("password")} />
+          <Input aria-label="Parol" type="password" autoComplete="current-password" {...register("password")} />
         </Field>
-        <div className="text-right text-sm">
-          <Link to="/forgot-password" className="text-primary">
-            Parolni unutdingizmi?
-          </Link>
-        </div>
+        {config.data?.siteKey ? <RobotCheck key={attempt} siteKey={config.data.siteKey} onVerify={verify} /> : <p className="border-l-2 border-warning bg-warning-soft px-3 py-2 text-sm text-foreground">{config.isPending ? "Robot tekshiruvi yuklanmoqda…" : "Robot tekshiruvi hali ulanmagan. Administratorga murojaat qiling."}</p>}
         {err && (
           <p className="rounded-md bg-destructive-soft px-3 py-2 text-sm text-destructive">{err}</p>
         )}
-        <Button type="submit" className="w-full" disabled={formState.isSubmitting}>
+        <Button type="submit" className="w-full" disabled={formState.isSubmitting || !captcha}>
           {formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Kirish
         </Button>
       </form>
