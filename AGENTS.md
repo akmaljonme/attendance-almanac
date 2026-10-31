@@ -15,3 +15,7 @@
 - Debt is derived, not stored: `v_tuition_obligations` (monthly per enrollment, optional first-month proration) minus non-voided payments minus adjustments = `v_student_balances.balance`. Keep all balance logic there.
 - Payments are never deleted or edited; corrections are voids with a reason or `financial_adjustments`. Audit triggers log finance/attendance changes.
 - Signed-in app lives under `src/routes/_authenticated/app.*`; the `app.tsx` layout loads the user's center membership and redirects to `/onboarding` when none exists.
+- Creator operations live in authenticated server functions, authorize through `public.user_roles`, and only then dynamically load the privileged client; center roles do not grant global access.
+- Admin-issued usernames map deterministically to synthetic auth emails; `account_access` protects usernames and blocked state outside editable profiles.
+- Login verifies Turnstile server-side before password auth; missing CAPTCHA configuration fails closed. Auth signup trigger allows only admin-provisioned accounts.
+- `/onboarding` is an access-pending screen, not self-service center creation; creator provisioning is transactional through a service-only RPC.

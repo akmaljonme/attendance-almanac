@@ -87,7 +87,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Markazly" },
       { property: "og:locale", content: "uz_UZ" },
-      { property: "og:image", content: "/logo.png" },
       { name: "twitter:card", content: "summary" },
     ],
     links: [
