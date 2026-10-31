@@ -18,6 +18,7 @@ export const Route = createFileRoute("/_authenticated/admin")({ head: () => page
 type Editor = "account" | "center" | "password" | "membership" | "edit_account" | "edit_center";
 const empty = { id: "", username: "", password: "", full_name: "", phone: "", name: "", city: "", owner_id: "", center_id: "", role: "admin" as "owner" | "admin" | "teacher" | "receptionist" };
 function AdminPage() {
+  const { user } = Route.useRouteContext();
   const fetchStatus = useServerFn(creatorStatus); const fetchOverview = useServerFn(adminOverview); const execute = useServerFn(adminCommand);
   const qc = useQueryClient(); const navigate = useNavigate();
   const status = useQuery({ queryKey: ["creator-status"], queryFn: () => fetchStatus() });
