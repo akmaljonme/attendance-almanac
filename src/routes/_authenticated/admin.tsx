@@ -40,6 +40,7 @@ function AdminPage() {
   const update = (key: keyof typeof empty, value: string) => setForm((v) => ({ ...v, [key]: value }));
   const name = (id: string) => q.data?.profiles.find((p) => p.id === id)?.full_name || "—";
   const term = search.toLowerCase();
+  const freeOwners = (q.data?.profiles ?? []).filter((p) => !q.data?.centers.some((c) => c.owner_id === p.id));
   return <div className="min-h-screen bg-background">
     <header className="flex flex-wrap items-center justify-between gap-3 border-b bg-card px-6 py-4"><Logo/><div className="flex gap-2"><Button variant="outline" asChild><Link to="/app/dashboard">CRM</Link></Button><Button variant="ghost" onClick={exit}><LogOut className="mr-2 h-4 w-4"/>Chiqish</Button></div></header>
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -58,7 +59,7 @@ function AdminPage() {
       {(editor === "password" || editor === "account") && <Field label="Parol"><Input required minLength={8} type="password" autoComplete="new-password" value={form.password} onChange={(e) => update("password", e.target.value)}/></Field>}
       {(editor === "center" || editor === "edit_center") && <><Field label="Markaz nomi"><Input required minLength={2} value={form.name} onChange={(e) => update("name", e.target.value)}/></Field><Field label="Shahar"><Input value={form.city} onChange={(e) => update("city", e.target.value)}/></Field></>}
       {editor !== "password" && editor !== "membership" && <Field label="Telefon"><Input type="tel" value={form.phone} onChange={(e) => update("phone", e.target.value)}/></Field>}
-      {editor === "center" && <Field label="Markaz egasi"><select required className={selectCls} value={form.owner_id} onChange={(e) => update("owner_id", e.target.value)}><option value="">Tanlang</option>{q.data?.profiles.map((p) => <option key={p.id} value={p.id}>{p.full_name}</option>)}</select></Field>}
+      {editor === "center" && <Field label="Markaz egasi"><select required className={selectCls} value={form.owner_id} onChange={(e) => update("owner_id", e.target.value)}><option value="">Tanlang</option>{freeOwners.map((p) => <option key={p.id} value={p.id}>{p.full_name}</option>)}</select>{freeOwners.length === 0 && <p className="mt-1.5 text-xs text-muted-foreground">Barcha hisoblarning markazi bor. Avval «Hisoblar» bo'limida yangi hisob yarating (markazsiz), keyin shu yerda ega qilib tanlang.</p>}</Field>}
       {(editor === "account" || editor === "membership") && <><Field label="Markaz"><select required={editor === "membership"} className={selectCls} value={form.center_id} onChange={(e) => update("center_id", e.target.value)}><option value="">{editor === "account" ? "Keyin biriktirish" : "Tanlang"}</option>{q.data?.centers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></Field><Field label="Rol"><select className={selectCls} value={form.role} onChange={(e) => update("role", e.target.value)}>{Object.entries(ROLE_LABELS).map(([r,l]) => <option key={r} value={r}>{l}</option>)}</select></Field></>}
       <Button type="submit" className="w-full" disabled={busy}>{busy ? "Saqlanmoqda…" : "Saqlash"}</Button>
     </form></DialogContent></Dialog>

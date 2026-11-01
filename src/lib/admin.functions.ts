@@ -24,6 +24,13 @@ export const adminOverview = createServerFn({ method: "POST" }).middleware([requ
   return { centers: results[0].data ?? [], profiles: results[1].data ?? [], access: results[2].data ?? [], memberships: results[3].data ?? [], audit: results[4].data ?? [] };
 });
 
+function friendlyError(message: string) {
+  if (message.includes("centers_owner_id_key")) return "Bu hisob allaqachon boshqa markazning egasi. Har bir markaz uchun alohida hisob yarating.";
+  if (message.includes("already been registered") || message.includes("already registered")) return "Bu login band. Boshqa login tanlang.";
+  if (message.includes("account_access_username_key")) return "Bu login band. Boshqa login tanlang.";
+  return message;
+}
+
 const commandSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("create_account"), account: issuedAccountSchema }),
   z.object({ action: z.literal("create_center"), name: z.string().trim().min(2).max(100), phone: z.string().max(30), city: z.string().max(100), owner_id: z.string().uuid() }),
@@ -39,7 +46,7 @@ export const adminCommand = createServerFn({ method: "POST" }).middleware([requi
   const role = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "creator" });
   requireCreatorRole(!role.error && role.data === true);
   const { supabaseAdmin: admin } = await import("@/integrations/supabase/client.server");
-  const check = (r: { error: { message: string } | null }) => { if (r.error) throw new Error(r.error.message); };
+  const check = (r: { error: { message: string } | null }) => { if (r.error) throw new Error(friendlyError(r.error.message)); };
   let target: string | undefined;
   if (data.action === "create_account") {
     const a = data.account;
