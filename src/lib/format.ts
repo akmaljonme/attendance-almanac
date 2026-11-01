@@ -122,6 +122,48 @@ export function time5(t: string | null | undefined): string {
   return t ? t.slice(0, 5) : "—";
 }
 
+const ONES_UZ = ["", "bir", "ikki", "uch", "to'rt", "besh", "olti", "yetti", "sakkiz", "to'qqiz"];
+const TENS_UZ = [
+  "",
+  "o'n",
+  "yigirma",
+  "o'ttiz",
+  "qirq",
+  "ellik",
+  "oltmish",
+  "yetmish",
+  "sakson",
+  "to'qson",
+];
+const SCALES_UZ = ["", "ming", "million", "milliard"];
+
+function groupToWordsUz(n: number): string {
+  const parts: string[] = [];
+  const h = Math.floor(n / 100);
+  const t = Math.floor((n % 100) / 10);
+  const o = n % 10;
+  if (h) parts.push(ONES_UZ[h], "yuz");
+  if (t) parts.push(TENS_UZ[t]);
+  if (o) parts.push(ONES_UZ[o]);
+  return parts.join(" ");
+}
+
+/** 1250000 -> "Bir million ikki yuz ellik ming so'm" (kvitansiyadagi summa so'z bilan). */
+export function amountInWordsUz(amount: number | null | undefined, withSuffix = true): string {
+  const n = Math.abs(Math.round(Number(amount ?? 0)));
+  const suffix = withSuffix ? " so'm" : "";
+  if (n === 0) return `Nol${suffix}`;
+  const groups: string[] = [];
+  let rest = n;
+  for (let i = 0; rest > 0 && i < SCALES_UZ.length; i++) {
+    const chunk = rest % 1000;
+    rest = Math.floor(rest / 1000);
+    if (chunk) groups.unshift([groupToWordsUz(chunk), SCALES_UZ[i]].filter(Boolean).join(" "));
+  }
+  const words = groups.join(" ");
+  return words.charAt(0).toUpperCase() + words.slice(1) + suffix;
+}
+
 export const PAYMENT_METHODS: Record<string, string> = {
   cash: "Naqd",
   card: "Bank kartasi",

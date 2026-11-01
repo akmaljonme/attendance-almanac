@@ -55,7 +55,7 @@ export const Route = createFileRoute("/_authenticated/app/payments")({
 type P = Awaited<ReturnType<NonNullable<ReturnType<typeof paymentsQ>["queryFn"]>>>[number];
 
 function PaymentsPage() {
-  const { centerId, centerName, role } = useCenter();
+  const { centerId, centerName, role, userId, userName } = useCenter();
   const perms = can(role);
   const qc = useQueryClient();
   const [from, setFrom] = useState(monthStartISO());
@@ -280,6 +280,7 @@ function PaymentsPage() {
             student_name: receipt.students?.full_name ?? "—",
             student_phone: receipt.students?.phone ?? null,
             group_name: receipt.groups?.name ?? null,
+            received_by: receipt.recorded_by === userId ? userName : null,
           }
         }
         onOpenChange={(v) => !v && setReceipt(null)}

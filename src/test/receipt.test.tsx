@@ -90,6 +90,32 @@ describe("Kvitansiya va o'quvchi kartasi", () => {
     expect(screen.getAllByText(/BEKOR QILINGAN: Xato kiritilgan/).length).toBeGreaterThan(0);
   });
 
+  it("kvitansiyada summa so'z bilan yoziladi va 80 mm formatga o'tish mumkin", () => {
+    render(
+      wrap(
+        <ReceiptDialog
+          onOpenChange={() => {}}
+          receipt={{
+            id: "22222222-0000-0000-0000-000000000000",
+            paid_on: "2026-11-01",
+            period_month: "2026-11-01",
+            method: "cash",
+            amount: 1250000,
+            reference: null,
+            voided_at: null,
+            void_reason: null,
+            student_name: "Test",
+            student_phone: null,
+            group_name: null,
+            received_by: "Dilnoza",
+          }}
+        />,
+      ),
+    );
+    expect(screen.getAllByText("Bir million ikki yuz ellik ming so'm").length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Qabul qildi: Dilnoza/).length).toBeGreaterThan(0);
+  });
+
   it("o'quvchi kartasida ism, guruh va ID ko'rinadi", () => {
     render(
       wrap(
@@ -109,6 +135,10 @@ describe("Kvitansiya va o'quvchi kartasi", () => {
     );
     expect(screen.getAllByText("Bobur Aliyev").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Matematika").length).toBeGreaterThan(0);
-    expect(screen.getAllByText(shortCode("99aabbcc-0000-0000-0000-000000000000")).length).toBe(2);
+    // old va orqa tomon, har biri ekranda va chop etish nusxasida
+    expect(
+      screen.getAllByText(new RegExp(shortCode("99aabbcc-0000-0000-0000-000000000000"))).length,
+    ).toBe(4);
+    expect(screen.getAllByText("BA").length).toBeGreaterThan(0);
   });
 });

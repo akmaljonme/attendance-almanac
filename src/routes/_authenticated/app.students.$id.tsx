@@ -70,7 +70,7 @@ export const Route = createFileRoute("/_authenticated/app/students/$id")({
 
 function StudentPage() {
   const { id } = Route.useParams();
-  const { role } = useCenter();
+  const { role, userId, userName } = useCenter();
   const perms = can(role);
   const qc = useQueryClient();
   const [dlg, setDlg] = useState<"edit" | "pay" | "enroll" | "archive" | "adjust" | "card" | null>(
@@ -506,6 +506,7 @@ function StudentPage() {
             student_name: s.full_name,
             student_phone: s.phone,
             group_name: receipt.groups?.name ?? null,
+            received_by: receipt.recorded_by === userId ? userName : null,
           }
         }
         onOpenChange={(v) => !v && setReceipt(null)}
@@ -542,6 +543,7 @@ type Pay = {
   method: string;
   amount: number;
   reference: string | null;
+  recorded_by: string | null;
   void_reason: string | null;
   voided_at: string | null;
   groups: { name: string } | null;
