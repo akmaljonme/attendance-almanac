@@ -35,6 +35,7 @@ import {
   selectCls,
 } from "@/components/app/ui-bits";
 import { PaymentDialog } from "@/components/app/dialogs";
+import { ReceiptDialog } from "@/components/app/receipt";
 import {
   PAYMENT_METHODS,
   formatDate,
@@ -265,53 +266,24 @@ function PaymentsPage() {
       </Panel>
       <PaymentDialog open={open} onOpenChange={setOpen} />
 
-      <Dialog open={!!receipt} onOpenChange={(v) => !v && setReceipt(null)}>
-        <DialogContent className="sm:max-w-md">
-          {receipt && (
-            <div id="receipt" className="space-y-3 text-sm">
-              <div className="text-center">
-                <p className="font-display text-lg font-semibold">{centerName}</p>
-                <p className="text-muted-foreground">To'lov kvitansiyasi</p>
-              </div>
-              <dl className="space-y-1.5 border-y py-3">
-                {[
-                  ["Sana", formatDate(receipt.paid_on)],
-                  ["O'quvchi", receipt.students?.full_name],
-                  ["Telefon", formatPhone(receipt.students?.phone)],
-                  ["Guruh", receipt.groups?.name ?? "—"],
-                  ["Davr", formatMonth(receipt.period_month)],
-                  ["Usul", PAYMENT_METHODS[receipt.method]],
-                  ["Chek raqami", receipt.reference ?? "—"],
-                  ["Kvitansiya №", receipt.id.slice(0, 8).toUpperCase()],
-                ].map(([k, v]) => (
-                  <div key={k} className="flex justify-between gap-4">
-                    <dt className="text-muted-foreground">{k}</dt>
-                    <dd className="text-right">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-              <div className="flex justify-between text-base font-semibold">
-                <span>Summa</span>
-                <span className="tabular">{formatUZS(receipt.amount)}</span>
-              </div>
-              {receipt.voided_at && (
-                <p className="text-center font-semibold text-destructive">
-                  BEKOR QILINGAN: {receipt.void_reason}
-                </p>
-              )}
-              <p className="text-xs text-muted-foreground">
-                Ushbu kvitansiya markaz tomonidan qo'lda qayd etilgan to'lovni tasdiqlaydi.
-              </p>
-              <DialogFooter className="no-print">
-                <Button onClick={() => window.print()}>
-                  <Printer className="mr-1.5 h-4 w-4" />
-                  Chop etish
-                </Button>
-              </DialogFooter>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <ReceiptDialog
+        receipt={
+          receipt && {
+            id: receipt.id,
+            paid_on: receipt.paid_on,
+            period_month: receipt.period_month,
+            method: receipt.method,
+            amount: receipt.amount,
+            reference: receipt.reference,
+            voided_at: receipt.voided_at,
+            void_reason: receipt.void_reason,
+            student_name: receipt.students?.full_name ?? "—",
+            student_phone: receipt.students?.phone ?? null,
+            group_name: receipt.groups?.name ?? null,
+          }
+        }
+        onOpenChange={(v) => !v && setReceipt(null)}
+      />
 
       <Dialog open={!!voiding} onOpenChange={(v) => !v && setVoiding(null)}>
         <DialogContent>

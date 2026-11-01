@@ -145,7 +145,23 @@
   mask-image: radial-gradient(ellipse at top, black 30%, transparent 75%);
 }
 
+/* Kvitansiya va o'quvchi kartasi: faqat chop etishda ko'rinadi */
+.print-root {
+  display: none;
+}
+
 @media print {
+  .print-root {
+    display: block;
+    padding: 8mm;
+  }
+  .print-root * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body:has(.print-root) > *:not(.print-root) {
+    display: none !important;
+  }
   .no-print {
     display: none !important;
   }

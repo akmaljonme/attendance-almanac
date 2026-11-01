@@ -1,7 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ArrowLeft, Pencil, Wallet, UsersRound, Archive, Plus, Printer } from "lucide-react";
+import {
+  ArrowLeft,
+  Pencil,
+  Wallet,
+  UsersRound,
+  Archive,
+  Plus,
+  Printer,
+  IdCard,
+} from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useCenter, can } from "@/lib/center";
@@ -42,6 +51,7 @@ import {
   StatusBadge,
 } from "@/components/app/ui-bits";
 import { EnrollDialog, PaymentDialog, StudentDialog } from "@/components/app/dialogs";
+import { ReceiptDialog, StudentCardDialog } from "@/components/app/receipt";
 import {
   ATTENDANCE_LABELS,
   PAYMENT_METHODS,
@@ -63,7 +73,10 @@ function StudentPage() {
   const { role } = useCenter();
   const perms = can(role);
   const qc = useQueryClient();
-  const [dlg, setDlg] = useState<"edit" | "pay" | "enroll" | "archive" | "adjust" | null>(null);
+  const [dlg, setDlg] = useState<"edit" | "pay" | "enroll" | "archive" | "adjust" | "card" | null>(
+    null,
+  );
+  const [receipt, setReceipt] = useState<Pay | null>(null);
 
   const q = useQuery({
     queryKey: ["student", id],
@@ -84,7 +97,7 @@ function StudentPage() {
         perms.recordPayment
           ? supabase
               .from("payments")
-              .select("*")
+              .select("*, groups(name)")
               .eq("student_id", id)
               .order("paid_on", { ascending: false })
           : Promise.resolve({ data: [], error: null }),
@@ -200,6 +213,10 @@ function StudentPage() {
               Tahrirlash
             </Button>
           )}
+          <Button variant="outline" onClick={() => setDlg("card")}>
+            <IdCard className="mr-1.5 h-4 w-4" />
+            Karta
+          </Button>
           {perms.recordPayment && (
             <Button variant="outline" onClick={() => window.print()}>
               <Printer className="mr-1.5 h-4 w-4" />
@@ -377,6 +394,7 @@ function StudentPage() {
                     <TableHead>Davr</TableHead>
                     <TableHead>Usul</TableHead>
                     <TableHead className="text-right">Summa</TableHead>
+                    <TableHead className="no-print w-12" />
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -396,6 +414,16 @@ function StudentPage() {
                         className={`text-right tabular font-medium ${p.voided_at ? "line-through" : "text-success"}`}
                       >
                         {formatUZS(p.amount)}
+                      </TableCell>
+                      <TableCell className="no-print text-right">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          aria-label="Kvitansiya"
+                          onClick={() => setReceipt(p)}
+                        >
+                          <Printer className="h-4 w-4" />
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -452,6 +480,36 @@ function StudentPage() {
         onOpenChange={(v) => !v && setDlg(null)}
         studentId={id}
       />
+      <StudentCardDialog
+        open={dlg === "card"}
+        onOpenChange={(v) => !v && setDlg(null)}
+        student={{
+          id: s.id,
+          full_name: s.full_name,
+          phone: s.phone,
+          parent_phone: s.parent_phone,
+          enrolled_on: s.enrolled_on,
+          groups: enr.filter((e) => e.status === "active").map((e) => e.groups?.name ?? "—"),
+        }}
+      />
+      <ReceiptDialog
+        receipt={
+          receipt && {
+            id: receipt.id,
+            paid_on: receipt.paid_on,
+            period_month: receipt.period_month,
+            method: receipt.method,
+            amount: receipt.amount,
+            reference: receipt.reference,
+            voided_at: receipt.voided_at,
+            void_reason: receipt.void_reason,
+            student_name: s.full_name,
+            student_phone: s.phone,
+            group_name: receipt.groups?.name ?? null,
+          }
+        }
+        onOpenChange={(v) => !v && setReceipt(null)}
+      />
       <AdjustDialog
         open={dlg === "adjust"}
         onOpenChange={(v) => !v && setDlg(null)}
@@ -483,7 +541,10 @@ type Pay = {
   period_month: string | null;
   method: string;
   amount: number;
+  reference: string | null;
+  void_reason: string | null;
   voided_at: string | null;
+  groups: { name: string } | null;
 };
 type Bal = {
   total_due: number | null;
