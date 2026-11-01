@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { issuedAccountSchema, requireCreatorRole, usernameEmail, usernameSchema } from "./access";
+import { issuedAccountSchema, requireCreatorRole, usernameEmail } from "./access";
 
 export const creatorStatus = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
   const { data, error } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "creator" });
@@ -29,7 +29,6 @@ const commandSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("create_center"), name: z.string().trim().min(2).max(100), phone: z.string().max(30), city: z.string().max(100), owner_id: z.string().uuid() }),
   z.object({ action: z.literal("edit_center"), id: z.string().uuid(), name: z.string().trim().min(2).max(100), phone: z.string().max(30), city: z.string().max(100) }),
   z.object({ action: z.literal("reset_password"), id: z.string().uuid(), password: z.string().min(8).max(128) }),
-  z.object({ action: z.literal("set_login"), id: z.string().uuid(), username: usernameSchema, password: z.string().min(8).max(128) }),
   z.object({ action: z.literal("block"), id: z.string().uuid(), blocked: z.boolean() }),
   z.object({ action: z.literal("membership"), id: z.string().uuid(), center_id: z.string().uuid(), role: z.enum(["owner", "admin", "teacher", "receptionist"]) }),
   z.object({ action: z.literal("edit_account"), id: z.string().uuid(), full_name: z.string().trim().min(2).max(100), phone: z.string().max(30) }),
@@ -65,13 +64,6 @@ export const adminCommand = createServerFn({ method: "POST" }).middleware([requi
   } else if (data.action === "edit_center") {
     target = data.id;
     check(await admin.from("centers").update({ name: data.name, phone: data.phone, city: data.city }).eq("id", data.id));
-  } else if (data.action === "set_login") {
-    target = data.id;
-    const existing = await admin.from("account_access").select("user_id").eq("username", data.username).maybeSingle();
-    check(existing);
-    if (existing.data && existing.data.user_id !== data.id) throw new Error("Bu login band");
-    check(await admin.auth.admin.updateUserById(data.id, { email: usernameEmail(data.username), password: data.password, email_confirm: true }));
-    check(await admin.from("account_access").upsert({ user_id: data.id, username: data.username }, { onConflict: "user_id" }));
   } else if (data.action === "reset_password") {
     target = data.id;
     check(await admin.auth.admin.updateUserById(data.id, { password: data.password }));
