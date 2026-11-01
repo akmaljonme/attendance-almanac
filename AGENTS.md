@@ -17,5 +17,5 @@
 - Signed-in app lives under `src/routes/_authenticated/app.*`; the `app.tsx` layout loads the user's center membership and redirects to `/onboarding` when none exists.
 - Creator operations live in authenticated server functions, authorize through `public.user_roles`, and only then dynamically load the privileged client; center roles do not grant global access.
 - Admin-issued usernames map deterministically to synthetic auth emails; `account_access` protects usernames and blocked state outside editable profiles.
-- Login verifies Turnstile server-side before password auth; missing CAPTCHA configuration fails closed. Auth signup trigger allows only admin-provisioned accounts.
+- Login is username/password only (no CAPTCHA — removed at owner request). Auth signup trigger allows only admin-provisioned accounts.
 - `/onboarding` is an access-pending screen, not self-service center creation; creator provisioning is transactional through a service-only RPC.
