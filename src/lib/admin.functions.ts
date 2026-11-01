@@ -51,7 +51,11 @@ export const adminCommand = createServerFn({ method: "POST" }).middleware([requi
   if (data.action === "create_account") {
     const a = data.account;
     if (a.center_id && a.role === "owner") throw new Error("Markaz egasi markaz yaratilganda biriktiriladi");
-    const result = await admin.auth.admin.createUser({ email: usernameEmail(a.username), password: a.password, email_confirm: true, app_metadata: { admin_provisioned: true }, user_metadata: { full_name: a.full_name, phone: a.phone } });
+    // Bir martalik token: Auth hisobni yozayotganda app_metadata trigger'ga ko'rinmasligi mumkin.
+    const provisionToken = crypto.randomUUID();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const issued = await (admin as any).from("provision_tokens").insert({ token: provisionToken, expires_at: new Date(Date.now() + 60_000).toISOString() });
+    const result = await admin.auth.admin.createUser({ email: usernameEmail(a.username), password: a.password, email_confirm: true, app_metadata: { admin_provisioned: true }, user_metadata: { full_name: a.full_name, phone: a.phone, ...(issued.error ? {} : { provision_token: provisionToken }) } });
     check(result);
     const user = result.data.user;
     if (!user) throw new Error("Hisob yaratilmadi");
