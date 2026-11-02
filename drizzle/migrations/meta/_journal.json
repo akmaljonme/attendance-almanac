@@ -15,6 +15,13 @@
       "when": 1793327720999,
       "tag": "0001_creator_accounts",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793626629912,
+      "tag": "0002_admin_login_lockout",
+      "breakpoints": true
     }
   ]
 }

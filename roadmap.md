@@ -1,4 +1,5 @@
 # Tasks
+- [ ] Add and verify admin login lockout after 5 consecutive failures for 15 minutes.
 - [ ] Diagnose reported admin username/password login failure and verify ordinary login.
 - [x] Creator-only center and account management with server-side authorization.
 - [x] Admin-issued username/password login; remove public signup and email recovery. Signup trigger denies non-admin provisioning.
