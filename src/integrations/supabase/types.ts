@@ -745,6 +745,21 @@ export type Database = {
         }
         Relationships: []
       }
+      provision_tokens: {
+        Row: {
+          expires_at: string
+          token: string
+        }
+        Insert: {
+          expires_at: string
+          token: string
+        }
+        Update: {
+          expires_at?: string
+          token?: string
+        }
+        Relationships: []
+      }
       students: {
         Row: {
           center_id: string
