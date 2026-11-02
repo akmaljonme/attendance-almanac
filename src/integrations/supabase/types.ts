@@ -43,6 +43,38 @@ export type Database = {
           },
         ]
       }
+      admin_login_guards: {
+        Row: {
+          attempt_token: string | null
+          attempt_until: string | null
+          failures: number
+          locked_until: string | null
+          username: string
+        }
+        Insert: {
+          attempt_token?: string | null
+          attempt_until?: string | null
+          failures?: number
+          locked_until?: string | null
+          username: string
+        }
+        Update: {
+          attempt_token?: string | null
+          attempt_until?: string | null
+          failures?: number
+          locked_until?: string | null
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_login_guards_username_fkey"
+            columns: ["username"]
+            isOneToOne: true
+            referencedRelation: "account_access"
+            referencedColumns: ["username"]
+          },
+        ]
+      }
       attendance_records: {
         Row: {
           center_id: string
@@ -982,6 +1014,7 @@ export type Database = {
     }
     Functions: {
       account_active: { Args: never; Returns: boolean }
+      begin_admin_login: { Args: { _username: string }; Returns: Json }
       create_center: {
         Args: {
           _city: string
@@ -996,6 +1029,10 @@ export type Database = {
       creator_create_center: {
         Args: { _city: string; _name: string; _owner: string; _phone: string }
         Returns: string
+      }
+      finish_admin_login: {
+        Args: { _outcome: string; _token: string; _username: string }
+        Returns: Json
       }
       has_center_role: {
         Args: {
