@@ -19,3 +19,4 @@
 - Admin-issued usernames map deterministically to synthetic auth emails; `account_access` protects usernames and blocked state outside editable profiles.
 - Login is username/password only (no CAPTCHA — removed at owner request). Auth signup trigger allows only admin-provisioned accounts.
 - `/onboarding` is an access-pending screen, not self-service center creation; creator provisioning is transactional through a service-only RPC.
+- Admin login guard state is durable and service-only, with atomic RPC attempt leases; the public username-login handler may dynamically load the privileged client solely for guard enforcement and a matching temporary Auth ban to prevent direct password-endpoint bypass.
