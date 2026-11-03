@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -19,7 +20,7 @@ import { EnrollDialog, GroupDialog, type GroupRow } from "@/components/app/dialo
 import { WEEKDAYS_UZ, formatDate, formatPhone, formatUZS, time5, todayISO } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/groups/$id")({
-  head: () => ({ meta: [{ title: "Guruh — Markazly" }] }),
+  head: () => pageHead("Guruh", "Markazly CRM: guruh ma’lumotlarini boshqarish."),
   component: GroupPage,
 });
 

@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -17,7 +18,7 @@ import { TeacherDialog, type TeacherRow } from "@/components/app/dialogs";
 import { WEEKDAYS_SHORT, formatPhone, time5 } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/teachers")({
-  head: () => ({ meta: [{ title: "O'qituvchilar — Markazly" }] }),
+  head: () => pageHead("O'qituvchilar", "Markazly CRM: o'qituvchilar ma’lumotlarini boshqarish."),
   component: TeachersPage,
 });
 

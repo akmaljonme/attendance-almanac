@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -22,7 +23,7 @@ import { ATTENDANCE_LABELS, formatDate, isoWeekday, todayISO } from "@/lib/forma
 
 export const Route = createFileRoute("/_authenticated/app/attendance")({
   validateSearch: z.object({ group: z.string().optional(), date: z.string().optional() }),
-  head: () => ({ meta: [{ title: "Davomat — Markazly" }] }),
+  head: () => pageHead("Davomat", "Markazly CRM: davomat ma’lumotlarini boshqarish."),
   component: AttendancePage,
 });
 

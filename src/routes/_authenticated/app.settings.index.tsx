@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -12,7 +13,7 @@ import { ErrorBox, Field, LoadingRows, PageHeader, Panel } from "@/components/ap
 import { formatDate, normalizePhone } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/settings/")({
-  head: () => ({ meta: [{ title: "Sozlamalar — Markazly" }] }),
+  head: () => pageHead("Sozlamalar", "Markazly CRM: sozlamalar ma’lumotlarini boshqarish."),
   component: SettingsPage,
 });
 

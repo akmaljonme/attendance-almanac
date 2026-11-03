@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -38,7 +39,7 @@ import { ExpenseDialog, type ExpenseRow } from "@/components/app/dialogs";
 import { EXPENSE_CATEGORIES, formatDate, formatUZS, monthStartISO, todayISO } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/expenses")({
-  head: () => ({ meta: [{ title: "Xarajatlar — Markazly" }] }),
+  head: () => pageHead("Xarajatlar", "Markazly CRM: xarajatlar ma’lumotlarini boshqarish."),
   component: ExpensesPage,
 });
 

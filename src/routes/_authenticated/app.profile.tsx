@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -10,7 +11,7 @@ import { Field, PageHeader, Panel } from "@/components/app/ui-bits";
 import { ROLE_LABELS } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/profile")({
-  head: () => ({ meta: [{ title: "Profil — Markazly" }] }),
+  head: () => pageHead("Profil", "Markazly CRM: profil ma’lumotlarini boshqarish."),
   component: ProfilePage,
 });
 

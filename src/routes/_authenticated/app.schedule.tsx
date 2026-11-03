@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -9,7 +10,7 @@ import { EmptyState, ErrorBox, LoadingRows, PageHeader, Panel } from "@/componen
 import { WEEKDAYS_UZ, addDays, formatDate, isoWeekday, time5, todayISO } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/schedule")({
-  head: () => ({ meta: [{ title: "Dars jadvali — Markazly" }] }),
+  head: () => pageHead("Dars jadvali", "Markazly CRM: dars jadvali ma’lumotlarini boshqarish."),
   component: SchedulePage,
 });
 

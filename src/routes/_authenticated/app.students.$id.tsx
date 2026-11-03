@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -64,7 +65,7 @@ import {
 } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/students/$id")({
-  head: () => ({ meta: [{ title: "O'quvchi — Markazly" }] }),
+  head: () => pageHead("O'quvchi", "Markazly CRM: o'quvchi ma’lumotlarini boshqarish."),
   component: StudentPage,
 });
 
