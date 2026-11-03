@@ -1,2 +1,3 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-export const Route = createFileRoute("/reset-password")({ beforeLoad: () => { throw redirect({ to: "/login", replace: true }); } });
+import { pageHead } from "@/lib/page-head";
+export const Route = createFileRoute("/reset-password")({ head: () => pageHead("Parolni tiklash", "Markazly hisobiga yangi parolni administrator beradi."), beforeLoad: () => { throw redirect({ to: "/login", replace: true }); } });
