@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
@@ -48,7 +49,7 @@ import {
 import { downloadCSV } from "@/lib/csv";
 
 export const Route = createFileRoute("/_authenticated/app/payments")({
-  head: () => ({ meta: [{ title: "To'lovlar — Markazly" }] }),
+  head: () => pageHead("To'lovlar", "Markazly CRM: to'lovlar ma’lumotlarini boshqarish."),
   component: PaymentsPage,
 });
 

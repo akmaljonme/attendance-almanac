@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Info } from "lucide-react";
@@ -15,7 +16,7 @@ import { ErrorBox, LoadingRows, PageHeader, Panel, StatusBadge } from "@/compone
 import { ROLE_LABELS, formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/settings/users")({
-  head: () => ({ meta: [{ title: "Xodimlar — Markazly" }] }),
+  head: () => pageHead("Xodimlar", "Markazly CRM: xodimlar ma’lumotlarini boshqarish."),
   component: UsersPage,
 });
 

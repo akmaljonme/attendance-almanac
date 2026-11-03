@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -34,7 +35,7 @@ import { downloadCSV } from "@/lib/csv";
 import { TrendingUp, TrendingDown, AlertCircle, Users } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/app/reports")({
-  head: () => ({ meta: [{ title: "Hisobotlar — Markazly" }] }),
+  head: () => pageHead("Hisobotlar", "Markazly CRM: hisobotlar ma’lumotlarini boshqarish."),
   component: ReportsPage,
 });
 

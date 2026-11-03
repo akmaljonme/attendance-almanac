@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -45,7 +46,7 @@ import {
 } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/app/dashboard")({
-  head: () => ({ meta: [{ title: "Bosh sahifa — Markazly" }] }),
+  head: () => pageHead("Bosh sahifa", "Markazly CRM: bosh sahifa ma’lumotlarini boshqarish."),
   component: Dashboard,
 });
 
