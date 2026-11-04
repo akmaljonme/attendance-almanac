@@ -1,0 +1,1 @@
+ALTER POLICY trusted_logos_published_read ON storage.objects USING (bucket_id = 'trusted-logos' AND EXISTS (SELECT 1 FROM public.trusted_centers t WHERE t.logo_path = storage.objects.name));
