@@ -37,6 +37,9 @@
   --color-warning-soft: var(--warning-soft);
   --color-navy: var(--navy);
   --color-navy-foreground: var(--navy-foreground);
+  --color-landing-ink: var(--landing-ink);
+  --color-landing-paper: var(--landing-paper);
+  --color-landing-lime: var(--landing-lime);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -59,6 +62,9 @@
 }
 
 :root {
+  --landing-ink: oklch(0.22 0.009 155);
+  --landing-paper: oklch(0.99 0.003 155);
+  --landing-lime: oklch(0.89 0.16 123);
   --radius: 0.75rem;
   --background: oklch(0.985 0.003 250);
   --foreground: oklch(0.2 0.03 260);
@@ -121,12 +127,17 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
   }
 }
 
 @utility tabular {
   font-variant-numeric: tabular-nums;
+}
+
+.landing-hero { height: min(620px, 72svh); min-height: 460px; }
+@media (max-width: 640px) {
+  .landing-hero { height: 600px; min-height: 0; max-height: 78svh; }
 }
 
 @utility hero-grid {

@@ -1,0 +1,1 @@
+CREATE POLICY trusted_logos_published_read ON storage.objects FOR SELECT TO anon, authenticated USING (bucket_id = 'trusted-logos' AND EXISTS (SELECT 1 FROM public.trusted_centers t WHERE t.logo_path = name));

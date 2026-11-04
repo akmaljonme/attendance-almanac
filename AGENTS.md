@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture rules
+- Trusted learning centers are a global public marketing directory, separate from tenant centers; creator-only writes and private logo storage with public-read signed URLs keep branding manageable without public buckets.
 - Multi-tenant: every center-owned table has `center_id`; access is enforced by RLS via `is_member()` / `has_center_role()` — UI permission checks in `src/lib/center.tsx` are cosmetic only.
 - Money is stored as integer UZS (`bigint`); never use floats for amounts.
 - Debt is derived, not stored: `v_tuition_obligations` (monthly per enrollment, optional first-month proration) minus non-voided payments minus adjustments = `v_student_balances.balance`. Keep all balance logic there.

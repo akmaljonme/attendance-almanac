@@ -1,4 +1,5 @@
 # Tasks
+- [x] Add public landing page and creator-managed trusted learning center names and logos; verified authenticated add/edit/delete with public logo rendering and mobile layout.
 - [x] Add and verify admin login lockout after 5 consecutive failures for 15 minutes; database tests and password-login UI flow passed using temporary test admin.
 - [x] Diagnose reported admin username/password login failure and verify ordinary login.
 - [x] Creator-only center and account management with server-side authorization.
