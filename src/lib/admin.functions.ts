@@ -2,6 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { issuedAccountSchema, requireCreatorRole, usernameEmail } from "./access";
+import { nextPeriod } from "./billing-rules";
+import { todayISO } from "./format";
+
+const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 
 export const creatorStatus = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
   const { data, error } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "creator" });
@@ -21,7 +25,24 @@ export const adminOverview = createServerFn({ method: "POST" }).middleware([requ
     admin.from("creator_audit").select("id,action,target_id,created_at").order("created_at", { ascending: false }).limit(30),
   ]);
   for (const r of results) if (r.error) throw new Error(r.error.message);
-  return { centers: results[0].data ?? [], profiles: results[1].data ?? [], access: results[2].data ?? [], memberships: results[3].data ?? [], audit: results[4].data ?? [] };
+  // Obuna jadvallari (0003_center_billing.sql) hali yaratilmagan bo'lsa, panel baribir ishlaydi.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const raw = admin as any;
+  const [subs, subPays] = await Promise.all([
+    raw.from("subscriptions").select("center_id,plan,status,paid_until"),
+    raw
+      .from("subscription_payments")
+      .select("id,center_id,plan,amount,months,period_start,period_end,paid_on,method,note")
+      .order("created_at", { ascending: false })
+      .limit(50),
+  ]);
+  const billingReady = !subs.error && !subPays.error && (subs.data ?? []).every((x: { paid_until?: unknown }) => "paid_until" in x);
+  const billing = {
+    ready: billingReady,
+    subscriptions: (billingReady ? subs.data : []) as BillingSub[],
+    payments: (billingReady ? subPays.data : []) as BillingPayment[],
+  };
+  return { billing, centers: results[0].data ?? [], profiles: results[1].data ?? [], access: results[2].data ?? [], memberships: results[3].data ?? [], audit: results[4].data ?? [] };
 });
 
 function friendlyError(message: string) {
@@ -31,6 +52,12 @@ function friendlyError(message: string) {
   return message;
 }
 
+export type BillingSub = { center_id: string; plan: string; status: string; paid_until: string | null };
+export type BillingPayment = {
+  id: string; center_id: string; plan: string; amount: number; months: number;
+  period_start: string; period_end: string; paid_on: string; method: string; note: string | null;
+};
+
 const commandSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("create_account"), account: issuedAccountSchema }),
   z.object({ action: z.literal("create_center"), name: z.string().trim().min(2).max(100), phone: z.string().max(30), city: z.string().max(100), owner_id: z.string().uuid() }),
@@ -38,9 +65,27 @@ const commandSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("reset_password"), id: z.string().uuid(), password: z.string().min(8).max(128) }),
   z.object({ action: z.literal("block"), id: z.string().uuid(), blocked: z.boolean() }),
   z.object({ action: z.literal("membership"), id: z.string().uuid(), center_id: z.string().uuid(), role: z.enum(["owner", "admin", "teacher", "receptionist"]) }),
+  z.object({
+    action: z.literal("subscription_payment"),
+    center_id: z.string().uuid(),
+    plan: z.enum(["start", "pro", "business"]),
+    months: z.number().int().min(1).max(36),
+    amount: z.number().int().min(0).max(1_000_000_000),
+    paid_on: isoDate,
+    method: z.enum(["cash", "card", "transfer", "other"]),
+    note: z.string().trim().max(200),
+  }),
+  z.object({ action: z.literal("set_paid_until"), center_id: z.string().uuid(), paid_until: isoDate, note: z.string().trim().min(3).max(200) }),
   z.object({ action: z.literal("edit_account"), id: z.string().uuid(), full_name: z.string().trim().min(2).max(100), phone: z.string().max(30) }),
 ]);
 export type AdminCommand = z.infer<typeof commandSchema>;
+
+/** Audit jurnaliga yoziladigan qo'shimcha ma'lumot (parol kabi maxfiy narsalar yozilmaydi). */
+function auditDetails(data: AdminCommand): Record<string, string | number> {
+  if (data.action === "subscription_payment") return { plan: data.plan, months: data.months, amount: data.amount };
+  if (data.action === "set_paid_until") return { paid_until: data.paid_until, note: data.note };
+  return {};
+}
 
 export const adminCommand = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth]).inputValidator((input: AdminCommand) => commandSchema.parse(input)).handler(async ({ context, data }) => {
   const role = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "creator" });
@@ -86,6 +131,29 @@ export const adminCommand = createServerFn({ method: "POST" }).middleware([requi
     check(await admin.from("account_access").update({ blocked: data.blocked }).eq("user_id", data.id));
     const r = await admin.auth.admin.updateUserById(data.id, { ban_duration: data.blocked ? "876000h" : "none" });
     if (r.error) { await admin.from("account_access").update({ blocked: !data.blocked }).eq("user_id", data.id); check(r); }
+  } else if (data.action === "subscription_payment") {
+    target = data.center_id;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const db = admin as any;
+    const sub = await db.from("subscriptions").select("paid_until").eq("center_id", data.center_id).maybeSingle();
+    check(sub);
+    if (!sub.data) throw new Error("Markazning obunasi topilmadi");
+    const period = nextPeriod(sub.data.paid_until, data.months, todayISO());
+    const ins = await db.from("subscription_payments").insert({
+      center_id: data.center_id, plan: data.plan, amount: data.amount, months: data.months,
+      period_start: period.start, period_end: period.end, paid_on: data.paid_on,
+      method: data.method, note: data.note || null, recorded_by: context.userId,
+    }).select("id").single();
+    check(ins);
+    const upd = await db.from("subscriptions").update({ plan: data.plan, status: "active", paid_until: period.end }).eq("center_id", data.center_id);
+    if (upd.error) {
+      await db.from("subscription_payments").delete().eq("id", ins.data.id);
+      check(upd);
+    }
+  } else if (data.action === "set_paid_until") {
+    target = data.center_id;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    check(await (admin as any).from("subscriptions").update({ paid_until: data.paid_until }).eq("center_id", data.center_id));
   } else if (data.action === "edit_account") {
     target = data.id;
     check(await admin.from("profiles").update({ full_name: data.full_name, phone: data.phone }).eq("id", data.id));
@@ -97,6 +165,6 @@ export const adminCommand = createServerFn({ method: "POST" }).middleware([requi
     if (data.role === "owner" && center.data?.owner_id !== data.id) throw new Error("Markazga faqat bitta ega biriktiriladi");
     check(await admin.from("center_memberships").upsert({ user_id: data.id, center_id: data.center_id, role: data.role }, { onConflict: "center_id,user_id" }));
   }
-  check(await admin.from("creator_audit").insert({ actor_id: context.userId, action: data.action, target_id: target, details: {} }));
+  check(await admin.from("creator_audit").insert({ actor_id: context.userId, action: data.action, target_id: target, details: auditDetails(data) }));
   return { ok: true };
 });

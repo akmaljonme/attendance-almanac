@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Loader2, Users } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { SubscriptionPanel } from "@/components/app/subscription-panel";
 import { useCenter } from "@/lib/center";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -125,15 +126,7 @@ function SettingsPage() {
           <Switch checked={f.prorate} onCheckedChange={(v) => setF({ ...f, prorate: v })} />
         </div>
       </Panel>
-      {q.data.s && (
-        <Panel title="Obuna" className="mb-4">
-          <p className="p-5 text-sm">
-            Tarif: <b className="capitalize">{q.data.s.plan}</b> · Holat:{" "}
-            {q.data.s.status === "trial" ? "Sinov davri" : q.data.s.status} · Sinov tugashi:{" "}
-            {formatDate(q.data.s.trial_ends_at.slice(0, 10))}
-          </p>
-        </Panel>
-      )}
+      <SubscriptionPanel />
       <div className="flex justify-end">
         <Button onClick={save} disabled={busy}>
           {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Saqlash

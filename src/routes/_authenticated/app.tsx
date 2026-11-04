@@ -43,6 +43,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Logo } from "@/components/app/logo";
+import { BillingBanner } from "@/components/app/billing-banner";
 import { CenterProvider, can, type CenterCtx, type CenterRole } from "@/lib/center";
 import { ROLE_LABELS, formatLongDate } from "@/lib/format";
 
@@ -105,6 +106,7 @@ function AppLayout() {
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar ctx={ctx} />
             <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+              <BillingBanner />
               <Outlet />
             </main>
           </div>
