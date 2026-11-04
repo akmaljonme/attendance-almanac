@@ -22,6 +22,27 @@
       "when": 1793626629912,
       "tag": "0002_admin_login_lockout",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793776985521,
+      "tag": "0003_trusted_learning_centers",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793777007348,
+      "tag": "0004_trusted_logo_public_read",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793777230647,
+      "tag": "0005_trusted_logo_policy_qualification",
+      "breakpoints": true
     }
   ]
 }

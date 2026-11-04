@@ -927,6 +927,30 @@ export type Database = {
           },
         ]
       }
+      trusted_centers: {
+        Row: {
+          created_at: string
+          id: string
+          logo_path: string
+          name: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          logo_path: string
+          name: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          logo_path?: string
+          name?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
