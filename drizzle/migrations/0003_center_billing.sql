@@ -69,16 +69,73 @@ GRANT EXECUTE ON FUNCTION public.center_access_state(uuid), public.center_writab
 
 -- 4) Muddati o'tgan markazda yozish taqiqlanadi (o'qish ishlayveradi).
 --    RESTRICTIVE siyosatlar mavjud ruxsatlarga qo'shimcha "VA" sharti bo'lib qo'shiladi.
-DO $$
-DECLARE t text;
-BEGIN
-  FOREACH t IN ARRAY ARRAY['courses','teachers','groups','students','enrollments','class_sessions',
-                           'attendance_records','payments','financial_adjustments','expenses'] LOOP
-    EXECUTE format('DROP POLICY IF EXISTS sub_active_ins ON public.%I', t);
-    EXECUTE format('DROP POLICY IF EXISTS sub_active_upd ON public.%I', t);
-    EXECUTE format('DROP POLICY IF EXISTS sub_active_del ON public.%I', t);
-    EXECUTE format('CREATE POLICY sub_active_ins ON public.%I AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id))', t);
-    EXECUTE format('CREATE POLICY sub_active_upd ON public.%I AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id))', t);
-    EXECUTE format('CREATE POLICY sub_active_del ON public.%I AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id))', t);
-  END LOOP;
-END $$;
+DROP POLICY IF EXISTS sub_active_ins ON public.courses;
+DROP POLICY IF EXISTS sub_active_upd ON public.courses;
+DROP POLICY IF EXISTS sub_active_del ON public.courses;
+CREATE POLICY sub_active_ins ON public.courses AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.courses AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.courses AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
+DROP POLICY IF EXISTS sub_active_ins ON public.teachers;
+DROP POLICY IF EXISTS sub_active_upd ON public.teachers;
+DROP POLICY IF EXISTS sub_active_del ON public.teachers;
+CREATE POLICY sub_active_ins ON public.teachers AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.teachers AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.teachers AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
+DROP POLICY IF EXISTS sub_active_ins ON public.groups;
+DROP POLICY IF EXISTS sub_active_upd ON public.groups;
+DROP POLICY IF EXISTS sub_active_del ON public.groups;
+CREATE POLICY sub_active_ins ON public.groups AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.groups AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.groups AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
+DROP POLICY IF EXISTS sub_active_ins ON public.students;
+DROP POLICY IF EXISTS sub_active_upd ON public.students;
+DROP POLICY IF EXISTS sub_active_del ON public.students;
+CREATE POLICY sub_active_ins ON public.students AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.students AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.students AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
+DROP POLICY IF EXISTS sub_active_ins ON public.enrollments;
+DROP POLICY IF EXISTS sub_active_upd ON public.enrollments;
+DROP POLICY IF EXISTS sub_active_del ON public.enrollments;
+CREATE POLICY sub_active_ins ON public.enrollments AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.enrollments AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.enrollments AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
+DROP POLICY IF EXISTS sub_active_ins ON public.class_sessions;
+DROP POLICY IF EXISTS sub_active_upd ON public.class_sessions;
+DROP POLICY IF EXISTS sub_active_del ON public.class_sessions;
+CREATE POLICY sub_active_ins ON public.class_sessions AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.class_sessions AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.class_sessions AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
+DROP POLICY IF EXISTS sub_active_ins ON public.attendance_records;
+DROP POLICY IF EXISTS sub_active_upd ON public.attendance_records;
+DROP POLICY IF EXISTS sub_active_del ON public.attendance_records;
+CREATE POLICY sub_active_ins ON public.attendance_records AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.attendance_records AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.attendance_records AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
+DROP POLICY IF EXISTS sub_active_ins ON public.payments;
+DROP POLICY IF EXISTS sub_active_upd ON public.payments;
+DROP POLICY IF EXISTS sub_active_del ON public.payments;
+CREATE POLICY sub_active_ins ON public.payments AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.payments AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.payments AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
+DROP POLICY IF EXISTS sub_active_ins ON public.financial_adjustments;
+DROP POLICY IF EXISTS sub_active_upd ON public.financial_adjustments;
+DROP POLICY IF EXISTS sub_active_del ON public.financial_adjustments;
+CREATE POLICY sub_active_ins ON public.financial_adjustments AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.financial_adjustments AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.financial_adjustments AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
+DROP POLICY IF EXISTS sub_active_ins ON public.expenses;
+DROP POLICY IF EXISTS sub_active_upd ON public.expenses;
+DROP POLICY IF EXISTS sub_active_del ON public.expenses;
+CREATE POLICY sub_active_ins ON public.expenses AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_upd ON public.expenses AS RESTRICTIVE FOR UPDATE TO authenticated USING (public.center_writable(center_id)) WITH CHECK (public.center_writable(center_id));
+CREATE POLICY sub_active_del ON public.expenses AS RESTRICTIVE FOR DELETE TO authenticated USING (public.center_writable(center_id));
+
