@@ -842,11 +842,65 @@ export type Database = {
           },
         ]
       }
+      subscription_payments: {
+        Row: {
+          amount: number
+          center_id: string
+          created_at: string
+          id: string
+          method: string
+          months: number
+          note: string | null
+          paid_on: string
+          period_end: string
+          period_start: string
+          plan: string
+          recorded_by: string | null
+        }
+        Insert: {
+          amount: number
+          center_id: string
+          created_at?: string
+          id?: string
+          method?: string
+          months: number
+          note?: string | null
+          paid_on?: string
+          period_end: string
+          period_start: string
+          plan: string
+          recorded_by?: string | null
+        }
+        Update: {
+          amount?: number
+          center_id?: string
+          created_at?: string
+          id?: string
+          method?: string
+          months?: number
+          note?: string | null
+          paid_on?: string
+          period_end?: string
+          period_start?: string
+          plan?: string
+          recorded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_payments_center_id_fkey"
+            columns: ["center_id"]
+            isOneToOne: false
+            referencedRelation: "centers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
           center_id: string
           created_at: string
           id: string
+          paid_until: string | null
           plan: string
           status: string
           trial_ends_at: string
@@ -855,6 +909,7 @@ export type Database = {
           center_id: string
           created_at?: string
           id?: string
+          paid_until?: string | null
           plan?: string
           status?: string
           trial_ends_at?: string
@@ -863,6 +918,7 @@ export type Database = {
           center_id?: string
           created_at?: string
           id?: string
+          paid_until?: string | null
           plan?: string
           status?: string
           trial_ends_at?: string
@@ -1039,6 +1095,17 @@ export type Database = {
     Functions: {
       account_active: { Args: never; Returns: boolean }
       begin_admin_login: { Args: { _username: string }; Returns: Json }
+      center_access_state: { Args: { _center: string }; Returns: string }
+      center_billing: {
+        Args: { _center: string }
+        Returns: {
+          days_left: number
+          paid_until: string
+          plan: string
+          state: string
+        }[]
+      }
+      center_writable: { Args: { _center: string }; Returns: boolean }
       create_center: {
         Args: {
           _city: string
