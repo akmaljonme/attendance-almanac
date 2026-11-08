@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture rules
+- Temporary closure is enforced at the server fetch entry before app handlers; disable the maintenance flag to restore access without touching stored data.
 - Trusted learning centers are a global public marketing directory, separate from tenant centers; creator-only writes and private logo storage with public-read signed URLs keep branding manageable without public buckets.
 - Multi-tenant: every center-owned table has `center_id`; access is enforced by RLS via `is_member()` / `has_center_role()` — UI permission checks in `src/lib/center.tsx` are cosmetic only.
 - Money is stored as integer UZS (`bigint`); never use floats for amounts.
